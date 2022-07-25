@@ -1,16 +1,67 @@
-$line-color-cyan: rgb(0, 217, 255);
-$line-color-blue: rgb(0, 26, 255);
-$line-color-orange: rgb(255, 208, 0);
-$line-color-red: rgb(255, 0, 0);
-$line-color-green: rgb(5, 145, 0);
-$line-color-black: rgb(0, 0, 0);
+$line-color-blue: rgb(78, 119, 255);
+$ui-background-color: rgb(250,250,250);
 
-.ui {
-    position: absolute;
-    right: 50px;
-    top: 10px;
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.clear-screen {
-    
+// ---------------- UI --------------------
+.ui {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+    right: 0px;
+    top: 0px;
+    width: min-content;
+    background-color: $ui-background-color;
+    padding: 2rem;
+    -webkit-box-shadow: 1px 6px 19px -7px rgba(0,0,0,0.58); 
+    box-shadow: 1px 6px 19px -7px rgba(0,0,0,0.58);
+    border-radius: 1rem;
+}
+
+.clear-screen-btn { // button
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    color: $line-color-blue;
+    border-color: $line-color-blue;
+    background: transparent;
+    width: 6rem;
+    transition: all 100ms ease-in;
+
+    &:hover {
+        color: white;
+        background-color: $line-color-blue;
+    }
+}
+
+.color-pallet {
+    margin-block: 1rem;
+    width: fit-content;
+    max-width: 5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+
+    div {
+        margin: 2px;
+        border-radius: 0.5rem;
+    }
+}
+
+.line-width {
+    width: 100%;
+}
+
+// ---------------- canvas --------------------
+.foreground-canvas {
+    position: absolute;
+    z-index: -1;
 }

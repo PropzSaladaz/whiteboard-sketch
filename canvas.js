@@ -1,19 +1,24 @@
-const canvas = document.querySelector('canvas')
-canvas.width = innerWidth
-canvas.height = innerHeight
+export { line }
+import {insideUI} from './ui.js'
 
-var c = canvas.getContext('2d')
+const foreGroundCanvas = document.querySelector('.foreground-canvas')
+foreGroundCanvas.width = innerWidth
+foreGroundCanvas.height = innerHeight
+const line = new Circle(0,0,0,0,2)
+const c = foreGroundCanvas.getContext('2d')
+
 var mousePressed = false;
-var point = new Circle(0,0,0,0,2)
 
 
+
+// Event Listeners ----------------------------------------
 
 window.addEventListener('mousedown', (event) => {
-    mousePressed = true;
+    if (!insideUI) mousePressed = true;
 })
 
 window.addEventListener('mouseup', (event) => {
-    c.stroke()
+    //c.stroke()
     mousePressed = false;
 })
 
@@ -23,13 +28,13 @@ window.addEventListener('mousemove', (event) => {
 })
 
 
-var button = document.querySelector('button').addEventListener('mousedown', () => {
+document.querySelector('.clear-screen-btn').addEventListener('mousedown', () => {
     console.log('clicked');
     c.clearRect(0,0,window.innerWidth, window.innerHeight)
 })
 
 
-
+// Objects ----------------------------------------
 
 var mouse = {
     currentX:    undefined,
@@ -59,6 +64,7 @@ var mouse = {
     }
 }
 
+
 function Circle(x, y, dx, dy, radius) {
     this.x = x;
     this.y = y;
@@ -67,11 +73,10 @@ function Circle(x, y, dx, dy, radius) {
     this.radius = radius;
 
     this.draw = function() {
-        console.log(c.strokeStyle);
         c.beginPath()
         c.arc(this.x, this.y, this.radius, 0 , Math.PI*2 , false)
-        c.stroke()
         c.fill()
+
     }
 
     this.update = () => {
@@ -85,21 +90,31 @@ function Circle(x, y, dx, dy, radius) {
         this.y += this.dy;
     }
 
-    this.updatePos= (x, y) => {
+    this.setColor = function(fillStyle) {
+        c.fillStyle = fillStyle
+    }
+
+    this.updatePos= function(x, y) {
         this.x = x
         this.y = y
     }
 
-    this.continuousDrawing = (x, y, prevX, prevY) => {
-        c.strokeStyle = `rgb(${100*mouse.getVelocity()},${5*mouse.getVelocity()},${5*mouse.getVelocity()})`
-        const step = 100
+    this.setRadius = function(radius) {
+        this.radius = radius
+    }
+
+    this.continuousDrawing = function(x, y, prevX, prevY) {
+
+        //c.fillStyle = `rgb(${15*mouse.getVelocity()},${255 - 15*mouse.getVelocity()},${100 + 15*mouse.getVelocity()})`
+        //this.radius = mouse.getVelocity()
+        const step = 300
         const xStep = (x-prevX)/step
         const yStep = (y-prevY)/step
         var xPos = prevX
         var yPos = prevY
         for ( let i = 0 ; i < step ; i++ ){
-            point.updatePos(xPos, yPos)
-            point.draw()
+            line.updatePos(xPos, yPos)
+            line.draw()
             xPos += xStep
             yPos += yStep
         }
@@ -107,12 +122,15 @@ function Circle(x, y, dx, dy, radius) {
     }
 }
 
+
+
 function animate() {
     requestAnimationFrame(animate)
     if(mousePressed) {
-        point.draw()
-        point.updatePos(mouse.currentX, mouse.currentY)
-        point.continuousDrawing(mouse.currentX, mouse.currentY, mouse.lastX, mouse.lastY)
+        line.draw()
+        line.updatePos(mouse.currentX, mouse.currentY)
+        line.continuousDrawing(mouse.currentX, mouse.currentY, mouse.lastX, mouse.lastY)
     }
 }
 animate()
+

@@ -5,18 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>drawingApp</title>
-    <link rel="stylesheet" href="dist/style.css">
+    <link rel="stylesheet" href="./dist/style.css">
 </head>
 <body>
     <div class="ui">
-        <button class="clear-screen">Clear screen</button>
-        <div class="color-pallet">
-            <div></div>
-            <div></div>
-        </div>
+        <button class="clear-screen-btn">Clear screen</button>
+        <div class="color-pallet"></div>
+        <input class="line-width" type="range" min="1" max="100">
     </div>
-    <canvas></canvas>
-    <script src="canvas.js"></script>
+    <canvas class="foreground-canvas"></canvas>
+    <canvas class="background-canvas"></canvas>
+    <script type="module" src="./canvas.js"></script>
+    <script type="module" src="./ui.js"></script>
     
 </body>
 </html>
