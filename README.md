@@ -3,6 +3,8 @@
 
 ### Simple Whiteboard with a pretty menu for simple annotations / drawinga
 
+![](https://github.com/PropzSaladaz/whiteboard-sketch/blob/main/preview.png?raw=true)
+
 ### Features (the ones marked are already implemented)
 - [ ] Smooth lines
 - [ ] Beautiful User Friendly Menu
