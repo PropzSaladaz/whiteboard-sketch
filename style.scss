@@ -11,7 +11,7 @@ $ui-background-color: rgb(250,250,250);
 
 // ---------------- UI --------------------
 .ui {
-    position: absolute;
+    position: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;

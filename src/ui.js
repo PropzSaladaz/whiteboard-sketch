@@ -1,4 +1,4 @@
-import { simpleLine } from '/src/foreground-canvas.js'
+import { foregroundCanvas } from '/src/foreground-canvas.js'
 
 
 // Color pallet - add new colors to the list
@@ -44,7 +44,7 @@ const UI = {
 
 }
 
-// ------------------------ SETUP -------------------------------- //
+// ------------------------ Color Pallet -------------------------------- //
 
 colors.forEach((color) => {
     // Add the collors to the DOM
@@ -58,7 +58,7 @@ colors.forEach((color) => {
 
     // To change line color
     div.addEventListener('click', () => {
-        simpleLine.setColor(div.style.backgroundColor)
+        foregroundCanvas.line.setColor(div.style.backgroundColor)
 
         var colors = [...colorPallet.children]
         colors.forEach( (color) => { // reset al colors' border
@@ -74,12 +74,18 @@ colors.forEach((color) => {
 
 })
 
+// ------------------------ LINE WIDTH --------------------------- //
 
-// Change line radius 
 lineWidthInputSlider.addEventListener('change', function() {
-    simpleLine.setRadius(minRadius + (lineWidthInputSlider.value/25));
+    foregroundCanvas.line.setRadius(minRadius + (lineWidthInputSlider.value/25));
 })
 
+
+// ------------------------ CLEAR SCREEN --------------------------- //
+
+document.querySelector('.clear-screen-btn').addEventListener('mousedown', () => {
+    foregroundCanvas.clearScreen()
+})
 
 document.querySelector('.ui').addEventListener('mousedown', () => {
     UI.isInsideMenu = true
@@ -88,8 +94,6 @@ document.querySelector('.ui').addEventListener('mousedown', () => {
 window.addEventListener('mouseup', () => {
     UI.isInsideMenu = false
 })
-
-// ------------------------ END OF SETUP --------------------------- //
 
 
 export { UI }
