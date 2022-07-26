@@ -2,7 +2,7 @@ class Line {
     constructor(radius, whiteboard){
         // constants
         this.numberPointsInMemory = 2
-        this.step = 300
+        this.step = 800
         this.whiteboard = whiteboard
 
         // variables

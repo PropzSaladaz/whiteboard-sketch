@@ -1,4 +1,4 @@
-import { foregroundCanvas } from '/src/foreground-canvas.js'
+import { foregroundCanvas , backgroundCanvas } from '/src/foreground-canvas.js'
 
 
 // Color pallet - add new colors to the list
@@ -85,6 +85,7 @@ lineWidthInputSlider.addEventListener('change', function() {
 
 document.querySelector('.clear-screen-btn').addEventListener('mousedown', () => {
     foregroundCanvas.clearScreen()
+/*     backgroundCanvas.clearScreen() */
 })
 
 document.querySelector('.ui').addEventListener('mousedown', () => {

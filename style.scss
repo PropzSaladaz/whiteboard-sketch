@@ -24,6 +24,7 @@ $ui-background-color: rgb(250,250,250);
     -webkit-box-shadow: 1px 6px 19px -7px rgba(0,0,0,0.58); 
     box-shadow: 1px 6px 19px -7px rgba(0,0,0,0.58);
     border-radius: 1rem;
+    z-index: 5;
 }
 
 .clear-screen-btn { // button
@@ -63,5 +64,5 @@ $ui-background-color: rgb(250,250,250);
 // ---------------- canvas --------------------
 .foreground-canvas {
     position: absolute;
-    z-index: -1;
+    z-index: 1;
 }
