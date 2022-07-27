@@ -8,10 +8,16 @@
     <link rel="stylesheet" href="./dist/style.css">
 </head>
 <body>
-    <div class="ui">
-        <button class="clear-screen-btn">Clear screen</button>
-        <div class="color-pallet"></div>
-        <input class="line-width" type="range" min="1" max="100">
+    <div class="ui-wrapper">
+        <div class="ui">
+            <button class="clear-screen btn-border btn-clickeable">DEL</button>
+            <div class="separator"></div>
+            <button class="clear-screen btn-border btn-clickeable">SAV</button>
+            <button class="clear-screen btn-border btn-clickeable">UND</button>
+            <div class="separator"></div>
+            <input class="line-width" orient="vertical" type="range" value="1" min="1" max="100">
+            <div class="color-pallet"></div>
+        </div>
     </div>
     <canvas class="foreground-canvas"></canvas>
     <canvas class="background-canvas"></canvas>

@@ -1,5 +1,13 @@
-$line-color-blue: rgb(78, 119, 255);
-$ui-background-color: rgb(250,250,250);
+$line-color-blue: rgb(235, 235, 235);
+$ui-background-color: rgba(255, 255, 255, 0.63);
+$ui-btn-border-color: #EDEDED;
+$ui-clickeable-btn-hover-color: rgb(245, 245, 245);
+$ui-width-slider-background-color: rgba(255,255,255, 0.6);
+$ui-separator-color: rgba(0, 0, 0, 0.123);
+$ui-main-color: #6A78F5;
+
+$btn-border-width: 2px;
+$btn-size: 50px;
 
 *,
 *::before,
@@ -10,35 +18,70 @@ $ui-background-color: rgb(250,250,250);
 }
 
 // ---------------- UI --------------------
-.ui {
+.ui-wrapper {
     position: fixed;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 1rem;
-    right: 0px;
-    top: 0px;
+    justify-content: center;
+    height: 100vh;
     width: min-content;
-    background-color: $ui-background-color;
-    padding: 2rem;
-    -webkit-box-shadow: 1px 6px 19px -7px rgba(0,0,0,0.58); 
-    box-shadow: 1px 6px 19px -7px rgba(0,0,0,0.58);
-    border-radius: 1rem;
-    z-index: 5;
+    right: 0px;
+    z-index: 2;
 }
 
-.clear-screen-btn { // button
-    padding: 0.5rem;
-    border-radius: 0.3rem;
-    color: $line-color-blue;
-    border-color: $line-color-blue;
-    background: transparent;
-    width: 6rem;
+.ui {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 15px;
+    width: min-content;
+    background-color: $ui-background-color;
+    padding: 3px;
+    -webkit-box-shadow: 1px 6px 19px -7px rgba(0,0,0,0.58); 
+    box-shadow: 1px 6px 19px -7px rgba(0,0,0,0.58);
+    border-radius: 20px;
+    backdrop-filter: blur(35px);
+}
+
+// BUTTONS - - - - - - - - - - - - - - - - -
+.btn-border {
+    width: $btn-size;
+    height: $btn-size;
+    border: $btn-border-width solid $ui-btn-border-color;
+    border-radius: 30%;
+}
+
+.btn-hoverable {
     transition: all 100ms ease-in;
+    
+    &:hover {
+        background-color: white;
+        border-width: 2px;
+        border-width: 8px;
+        border-radius: 50%;
+    }
+}
+
+.clear-screen {
+    background-color: white;
+    transition: all 100ms ease-out;
 
     &:hover {
+        background-color: $ui-clickeable-btn-hover-color;
+    }
+
+}
+
+.btn-clickeable {
+    font-weight: 800;
+    width: $btn-size;
+    height: $btn-size;
+    margin-block: 3px;
+
+    &:active {
         color: white;
-        background-color: $line-color-blue;
+        background-color: $ui-main-color;
+        border-width: 3px;
     }
 }
 
@@ -47,19 +90,58 @@ $ui-background-color: rgb(250,250,250);
     width: fit-content;
     max-width: 5rem;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-
+    flex-direction: column;
     div {
+        width: $btn-size;
+        height: $btn-size;
         margin: 2px;
-        border-radius: 0.5rem;
     }
 }
 
-.line-width {
-    width: 100%;
+// INPUT RANGE - - - - - - - - - - - - - - -
+input[type="range"] {
+    -webkit-appearance: none;
+    margin-block: 3px;
+    width: $btn-size/2.7;
+    height: $btn-size*2.5;
+    background: $ui-main-color;
+    border: 2px solid $ui-btn-border-color;
+    border-radius: 10px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9));
+    background-size: 100% 30%;
+    background-repeat: no-repeat;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    -webkit-appearance: none;
+    height: $btn-size/1.9;
+    width: $btn-size/1.9;
+    border: 4px solid white;
+    border-radius: 50%;
+    background-color: $ui-main-color;
+    transition: all .3s ease-in-out;
+    &:hover {
+        box-shadow: 0px 100px 80px rgba(0, 0, 0, 0.10), 
+        0px 41.7776px 33.4221px rgba(0, 0, 0, 0.122205), 
+        0px 22.3363px 17.869px rgba(0, 0, 0, 0.101338), 
+        0px 12.5216px 10.0172px rgba(0, 0, 0, 0.085), 
+        0px 6.6501px 5.32008px rgba(0, 0, 0, 0.0686618), 
+        0px 2.76726px 2.21381px rgba(0, 0, 0, 0.0477948);
+        background-color: white;
+    }
+  }
+
+// SPEARATORS - - - - - - - - - - - - - - - - - - 
+
+.separator {
+    margin-block: 5px;
+    width: 80%;
+    height: 3px;
+    background-color: $ui-separator-color;
 }
+
+  
+
 
 // ---------------- canvas --------------------
 .foreground-canvas {

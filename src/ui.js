@@ -3,15 +3,16 @@ import { foregroundCanvas , backgroundCanvas } from '/src/foreground-canvas.js'
 
 // Color pallet - add new colors to the list
 const colors = [ 
-    'rgb(0,     217,    255)' ,
-    'rgb(0,     26,     255)' ,
-    'rgb(255,   208,    0)'   ,
-    'rgb(255,   0,      0)'   ,
-    'rgb(5,     145,    0)'   ,
-    'rgb(0,     0,      0)'
+    'rgba(255, 255, 255, 1)' ,
+    'rgba(255, 242, 129, 1)' ,
+    'rgba(106, 120, 245, 1)'   ,
+    'rgba(236, 117, 139, 1)'   ,
+    'rgba(109, 251, 157, 1)'   ,
+    'rgba(0,   0,   0,   1)'
 ]
 
 const lineWidthInputSlider = document.querySelector('.line-width')
+const rangeInput = document.querySelector('input[type="range"]')
 const colorPallet = document.querySelector('.color-pallet')
 const colorDefaultSize = 35; // color-pallet squares size in pixels
 const minRadius = 1;
@@ -45,14 +46,17 @@ const UI = {
 }
 
 // ------------------------ Color Pallet -------------------------------- //
+const borderColor = "#EDEDED"
+
 
 colors.forEach((color) => {
     // Add the collors to the DOM
     var div = document.createElement('div')
     div.style.backgroundColor = color
-    div.style.width =   `${colorDefaultSize}px`
-    div.style.height =  `${colorDefaultSize}px`
+    /* div.style.width =   `${colorDefaultSize}px`
+    div.style.height =  `${colorDefaultSize}px` */
     div.style.transition = "all 200ms ease-in-out"
+    div.classList.add("color-btn", "btn-border", "btn-hoverable")
     colorPallet.appendChild(div)
 
 
@@ -61,15 +65,16 @@ colors.forEach((color) => {
         foregroundCanvas.line.setColor(div.style.backgroundColor)
 
         var colors = [...colorPallet.children]
-        colors.forEach( (color) => { // reset al colors' border
-            color.style.border =  "none"
-            color.style.width  =  `${colorDefaultSize}px`
-            color.style.height =  `${colorDefaultSize}px`
+        colors.forEach( (color) => { // reset all colors' border
+            color.style.borderColor =  borderColor
+            color.style.borderRadius = "30%"
+            color.style.borderWidth = "2px"
         })
         // put border only on the clicked one
-        div.style.border = "5px dotted white"
-        div.style.width = `${colorDefaultSize*0.9}px`
-        div.style.height = `${colorDefaultSize*0.9}px`
+        div.style.borderWidth = "8px"
+        div.style.borderColor = "#6A78F5"
+        div.style.borderRadius = "50%"
+
     })
 
 })
@@ -83,7 +88,7 @@ lineWidthInputSlider.addEventListener('change', function() {
 
 // ------------------------ CLEAR SCREEN --------------------------- //
 
-document.querySelector('.clear-screen-btn').addEventListener('mousedown', () => {
+document.querySelector('.clear-screen').addEventListener('mousedown', () => {
     foregroundCanvas.clearScreen()
 /*     backgroundCanvas.clearScreen() */
 })
@@ -95,6 +100,21 @@ document.querySelector('.ui').addEventListener('mousedown', () => {
 window.addEventListener('mouseup', () => {
     UI.isInsideMenu = false
 })
+
+rangeInput.addEventListener('input', changeInputRangeFillBackground)
+
+function changeInputRangeFillBackground(e) {
+    let target = e.target
+    if (e.target.type !== 'range') {
+        target = document.getElementById('range')
+    }
+    const min = target.min
+    const max = target.max
+    const val = target.value
+
+    target.style.backgroundSize = ` 100% ${100 - (val - min) * 100 / (max - min)}%` 
+}
+
 
 
 export { UI }

@@ -183,6 +183,7 @@ function animate() {
 /*         backgroundCanvas.updateCanvasLimits(mouse) */
         foregroundCanvas.resize()
 /*         backgroundCanvas.resize() */
+    
     }
 }
 animate()
