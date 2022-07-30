@@ -26,23 +26,33 @@ const backgroundCanvas = 0 //new Canvas(backCanvas)
 
 var mousePressed = false;
 
-window.addEventListener('mousedown', () => {
-    if (!UI.isInsideMenu) mousePressed = true;
-})
+const onMouseDown = function(e) {
+    if (!UI.isInsideMenu) {
+        mousePressed = true;
+        foregroundCanvas.startNewLine();
+    }
+}
 
-window.addEventListener('mouseup', () => {
+const onMouseUp = function(e) {
     mousePressed = false;
-})
+    foregroundCanvas.endOfLine();
+}
 
-window.addEventListener('mousemove', (event) => {
-    mouse.update(event.x, event.y)
+const onMouseMove = function(e) {
+    mouse.update(e.x, e.y)
+}
 
-})
+const onResize = function(e) {
+    foregroundCanvas.resize()
+}
 
-window.addEventListener('resize', () => {
-     foregroundCanvas.resize()
-    /*backgroundCanvas.resize() */
-})
+window.addEventListener('mousedown', onMouseDown)
+
+window.addEventListener('mouseup',   onMouseUp)
+
+window.addEventListener('mousemove', onMouseMove)
+
+window.addEventListener('resize',    onResize)
 
 
 

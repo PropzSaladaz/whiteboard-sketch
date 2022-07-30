@@ -22,8 +22,16 @@
      */
     drawLine(mouse) {
         this.line.updateCurrentPos(mouse.currentX, mouse.currentY)
-        this.line.updateLastPos(mouse.lastX, mouse.lastY)
+
         this.line.drawLine()
+    }
+
+    endOfLine() {
+        this.line.releasePen();
+    }
+
+    startNewLine() {
+        this.line.pressPen();
     }
 
     /**

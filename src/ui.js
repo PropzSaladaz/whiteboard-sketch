@@ -112,8 +112,6 @@ class UserInterface {
     }
 
     toggleTheme(){
-        console.log(this.currentColor)
-        console.log(this.theme.mainLineColor);
         const isUsingMainColor = (this.currentColor === this.theme.mainLineColor);
         this.theme = (this.theme.name === lightMode) ? themes.dark : themes.light;
         if (isUsingMainColor) {
