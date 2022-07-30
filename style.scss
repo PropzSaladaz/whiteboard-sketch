@@ -43,6 +43,10 @@ $btn-size: 50px;
     backdrop-filter: blur(35px);
 }
 
+body {
+    transition: all 200ms ease-in-out;
+}
+
 // BUTTONS - - - - - - - - - - - - - - - - -
 .btn-border {
     width: $btn-size;
