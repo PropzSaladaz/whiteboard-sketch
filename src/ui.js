@@ -31,10 +31,12 @@ const themes = {
     dark:  new Theme(darkMode , colors.white, colors.black, colors.white, colors.black )
 }
 
-var uiDOM                  = document.querySelector('.ui') 
+const uiDOM                = document.querySelector('.main-menu') 
 const lineWidthInputSlider = document.querySelector('.line-width')
 const rangeInput           = document.querySelector('input[type="range"]')
 const colorPallet          = document.querySelector('.color-pallet')
+const hideMenu             = document.querySelector('.hide-menu');
+const menuWrapper          = document.querySelector('.main-menu');
 const minLineRadius = 1;
 
 
@@ -42,6 +44,8 @@ class UserInterface {
     constructor() {
         this.theme = themes.light
         this.DOM = uiDOM
+        this.container = menuWrapper;
+        this.isVisible = true;
         this.isInsideMenu = false
         this.lineWidth = minLineRadius
         this.currentColor = themes.light.mainLineColor
@@ -132,37 +136,75 @@ class UserInterface {
         foregroundCanvas.clearScreen()
         foregroundCanvas.setLineColor(this.currentColor);
     }
+
+    hide() {
+        this.container.style.transform = 'translateX(100px)';
+        this.container.style.opacity   = '0';
+    }
+
+    show() {
+        this.container.style.transform = 'translateX(0px)';
+        this.container.style.opacity   = '1';
+    }
+
+    toggleVisibility() {
+        if (this.isVisible) {
+            this.hide();
+            this.isVisible = false;
+        }
+        else {
+            this.show();
+            this.isVisible = true;
+        }
+    }
 }
 
 
 const UI = new UserInterface()
-// ------------------------ Color Pallet -------------------------------- //
 
-// ------------------------ LINE WIDTH --------------------------- //
+// ------------------------ Events -------------------------------- //
+
 const lineWidthChange = new Event('lineWidthChange')
 
-lineWidthInputSlider.addEventListener('change', () =>
-foregroundCanvas.line.setRadius(minLineRadius + (lineWidthInputSlider.value/25)) )
+lineWidthInputSlider.addEventListener('change', onChnageLineWidth);
 
+document.querySelector('.clear-screen').addEventListener('mousedown', onClearScreen)
 
-// ------------------------ CLEAR SCREEN --------------------------- //
+document.querySelector('.theme').addEventListener('click', onChangeTheme)
 
-document.querySelector('.clear-screen').addEventListener('mousedown', () => UI.clearScreen())
+document.querySelector('.main-menu').addEventListener('mousedown', onMouseDown)
 
-document.querySelector('.theme').addEventListener('click', () => {
-    UI.toggleTheme();
-    UI.clearScreen();
-})
-
-document.querySelector('.ui').addEventListener('mousedown', () => {
-    UI.isInsideMenu = true
-})
-
-window.addEventListener('mouseup', () => {
-    UI.isInsideMenu = false
-})
+window.addEventListener('mouseup', onMouseUp)
 
 rangeInput.addEventListener('input', changeInputRangeFillBackground)
+
+hideMenu.addEventListener('click', onHideMenu);
+
+
+
+
+// ------------------------ Event Handlers -------------------------------- //
+
+function onChnageLineWidth(){
+    foregroundCanvas.line.setRadius(minLineRadius + (lineWidthInputSlider.value/25))
+}
+
+function onClearScreen(){
+    UI.clearScreen()
+}
+
+function onChangeTheme(){
+    UI.toggleTheme();
+    UI.clearScreen();
+}
+
+function onMouseDown(){
+    UI.isInsideMenu = true
+}
+
+function onMouseUp(){
+    UI.isInsideMenu = false
+}
 
 function changeInputRangeFillBackground(e) {
     let target = e.target
@@ -174,6 +216,10 @@ function changeInputRangeFillBackground(e) {
     const val = target.value
 
     target.style.backgroundSize = ` 100% ${100 - (val - min) * 100 / (max - min)}%` 
+}
+
+function onHideMenu(){
+    UI.toggleVisibility();
 }
 
 

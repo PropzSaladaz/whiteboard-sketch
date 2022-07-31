@@ -17,6 +17,7 @@
   width: min-content;
   right: 0px;
   z-index: 2;
+  transition: all 100ms ease-in-out;
 }
 
 .ui {
@@ -33,6 +34,7 @@
   border-radius: 20px;
   -webkit-backdrop-filter: blur(35px);
           backdrop-filter: blur(35px);
+  transition: all 500ms ease-in-out;
 }
 
 body {
@@ -56,19 +58,16 @@ body {
   border-radius: 50%;
 }
 
-.clear-screen {
-  background-color: white;
-  transition: all 100ms ease-out;
-}
-.clear-screen:hover {
-  background-color: rgb(245, 245, 245);
-}
-
 .btn-clickeable {
   font-weight: 800;
   width: 50px;
   height: 50px;
   margin-block: 3px;
+  background-color: white;
+  transition: all 100ms ease-out;
+}
+.btn-clickeable:hover {
+  background-color: rgb(245, 245, 245);
 }
 .btn-clickeable:active {
   color: white;
@@ -91,6 +90,13 @@ body {
   margin: 2px;
 }
 
+.hide-menu {
+  width: 50px;
+  height: 38.4615384615px;
+  margin-inline: 3px;
+  margin-bottom: 10px;
+}
+
 input[type=range] {
   -webkit-appearance: none;
   margin-block: 3px;
@@ -100,14 +106,14 @@ input[type=range] {
   border: 2px solid #EDEDED;
   border-radius: 10px;
   background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9));
-  background-size: 100% 30%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
 }
 
 input[type=range]::-moz-range-thumb {
   -webkit-appearance: none;
-  height: 26.3157894737px;
-  width: 26.3157894737px;
+  height: 25px;
+  width: 25px;
   border: 4px solid white;
   border-radius: 50%;
   background-color: #6A78F5;

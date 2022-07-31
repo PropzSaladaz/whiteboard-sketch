@@ -12,7 +12,7 @@ frontCanvas.height = innerHeight
 
 const foregroundCanvas = new Canvas(
     frontCanvas,
-    new Line(2, frontCanvas.getContext('2d'))
+    new Line(UI.lineWidth, frontCanvas.getContext('2d'))
     ) 
 
 /* const backCanvas = document.querySelector('.background-canvas')
