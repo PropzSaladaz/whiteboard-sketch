@@ -8,6 +8,7 @@ $ui-main-color: #6A78F5;
 
 $btn-border-width: 2px;
 $btn-size: 50px;
+$btn-margin-inline: 2px;
 
 *,
 *::before,
@@ -45,6 +46,10 @@ $btn-size: 50px;
     transition: all 500ms ease-in-out;
 }
 
+.color-pallet-wrapper {
+    margin-top: 15px;
+}
+
 body {
     transition: all 200ms ease-in-out;
 }
@@ -74,6 +79,7 @@ body {
     width: $btn-size;
     height: $btn-size;
     margin-block: 3px;
+    margin-inline: $btn-margin-inline;
     background-color: white;
     transition: all 100ms ease-out;
 
@@ -89,7 +95,7 @@ body {
 }
 
 .color-pallet {
-    margin-block: 1rem;
+    margin-block: 1px;
     width: fit-content;
     max-width: 5rem;
     display: flex;
@@ -97,7 +103,7 @@ body {
     div {
         width: $btn-size;
         height: $btn-size;
-        margin: 2px;
+        margin: $btn-margin-inline;
     }
 }
 

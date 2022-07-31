@@ -30,30 +30,31 @@ const themes = {
     light: new Theme(lightMode, colors.black, colors.white, colors.black, colors.UIBackgroundLightTheme ),
     dark:  new Theme(darkMode , colors.white, colors.black, colors.white, colors.black )
 }
-
-const uiDOM                = document.querySelector('.main-menu') 
+ 
 const lineWidthInputSlider = document.querySelector('.line-width')
 const rangeInput           = document.querySelector('input[type="range"]')
 const colorPallet          = document.querySelector('.color-pallet')
+const collorPalletWrapper  = document.querySelector('.color-pallet-wrapper');
 const hideMenu             = document.querySelector('.hide-menu');
 const menuWrapper          = document.querySelector('.main-menu');
+
 const minLineRadius = 1;
 
 
 class UserInterface {
     constructor() {
-        this.theme = themes.light
-        this.DOM = uiDOM
-        this.container = menuWrapper;
-        this.isVisible = true;
-        this.isInsideMenu = false
-        this.lineWidth = minLineRadius
-        this.currentColor = themes.light.mainLineColor
-        this.colorPallet = {mainColor: this.theme.mainLineColor ,
-                            yellow:    colors.yellow ,
-                            blue:      colors.blue ,
-                            red:       colors.red ,
-                            green:     colors.green }
+        this.theme               = themes.light
+        this.menuWrapper         = menuWrapper;
+        this.collorPalletWrapper = collorPalletWrapper
+        this.isVisible           = true;
+        this.isInsideMenu        = false
+        this.lineWidth           = minLineRadius
+        this.currentColor        = themes.light.mainLineColor
+        this.colorPallet         = {mainColor: this.theme.mainLineColor ,
+                                    yellow:    colors.yellow ,
+                                    blue:      colors.blue ,
+                                    red:       colors.red ,
+                                    green:     colors.green }
 
         Object.entries(this.colorPallet).forEach((entryArray) => {
             var color = entryArray[1]
@@ -138,13 +139,17 @@ class UserInterface {
     }
 
     hide() {
-        this.container.style.transform = 'translateX(100px)';
-        this.container.style.opacity   = '0';
+        this.menuWrapper.style.transform = 'translateX(100px)';
+        this.menuWrapper.style.opacity   = '0';
+        this.collorPalletWrapper.style.transform = 'translateX(100px)';
+        this.collorPalletWrapper.style.opacity = '0';
     }
 
     show() {
-        this.container.style.transform = 'translateX(0px)';
-        this.container.style.opacity   = '1';
+        this.menuWrapper.style.transform = 'translateX(0px)';
+        this.menuWrapper.style.opacity   = '1';
+        this.collorPalletWrapper.style.transform = 'translateX(0px)';
+        this.collorPalletWrapper.style.opacity = '1';
     }
 
     toggleVisibility() {
