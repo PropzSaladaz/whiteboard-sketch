@@ -6,7 +6,7 @@
 ![](https://github.com/PropzSaladaz/whiteboard-sketch/blob/main/preview.png?raw=true)
 
 ### Features (the ones marked are already implemented)
-- [ ] Smooth lines
+- [X] Smooth lines
 - [ ] Beautiful User Friendly Menu
 - [X] Change Line Width
 - [ ] Change Background
