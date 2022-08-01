@@ -37,8 +37,10 @@ const colorPallet          = document.querySelector('.color-pallet')
 const collorPalletWrapper  = document.querySelector('.color-pallet-wrapper');
 const hideMenu             = document.querySelector('.hide-menu');
 const menuWrapper          = document.querySelector('.main-menu');
+const eraserButton         = document.querySelector('.eraser');
 
-const minLineRadius = 1;
+const minLineRadius   = 1;
+const minEraserRadius = 2;
 
 
 class UserInterface {
@@ -48,6 +50,7 @@ class UserInterface {
         this.collorPalletWrapper = collorPalletWrapper
         this.isVisible           = true;
         this.isInsideMenu        = false
+        this.usingEraser         = false;
         this.lineWidth           = minLineRadius
         this.currentColor        = themes.light.mainLineColor
         this.colorPallet         = {mainColor: this.theme.mainLineColor ,
@@ -73,6 +76,7 @@ class UserInterface {
             div.addEventListener('click', () => {
                 foregroundCanvas.line.setColor(div.style.backgroundColor)
                 this.setCurrentColor(div.style.backgroundColor)
+                this.stopUsingEraser();
         
                 var colors = [...colorPallet.children]
                 colors.forEach( (color) => { // reset all colors' border
@@ -114,6 +118,16 @@ class UserInterface {
 
     toggleInsideMenu() {
         this.isInsideMenu = !this.isInsideMenu
+    }
+
+    useEraser() {
+        this.setCurrentColor(this.theme.eraserColor);
+        this.usingEraser = true;
+        foregroundCanvas.setLineColor(this.currentColor);
+    }
+
+    stopUsingEraser() {
+        this.usingEraser = false;
     }
 
     toggleTheme(){
@@ -171,7 +185,7 @@ const UI = new UserInterface()
 
 const lineWidthChange = new Event('lineWidthChange')
 
-lineWidthInputSlider.addEventListener('change', onChnageLineWidth);
+lineWidthInputSlider.addEventListener('change', onChangeLineWidth);
 
 document.querySelector('.clear-screen').addEventListener('mousedown', onClearScreen)
 
@@ -185,13 +199,16 @@ rangeInput.addEventListener('input', changeInputRangeFillBackground)
 
 hideMenu.addEventListener('click', onHideMenu);
 
+eraserButton.addEventListener('click', onEraser)
+
 
 
 
 // ------------------------ Event Handlers -------------------------------- //
 
-function onChnageLineWidth(){
-    foregroundCanvas.line.setRadius(minLineRadius + (lineWidthInputSlider.value/25))
+function onChangeLineWidth(){
+    if (UI.usingEraser) foregroundCanvas.line.setRadius(minEraserRadius + 5*(lineWidthInputSlider.value/25))
+    else foregroundCanvas.line.setRadius(minLineRadius + (lineWidthInputSlider.value/25))
 }
 
 function onClearScreen(){
@@ -227,6 +244,9 @@ function onHideMenu(){
     UI.toggleVisibility();
 }
 
+function onEraser(){
+    UI.useEraser();
+}
 
 
 export { UI }
