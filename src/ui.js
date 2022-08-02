@@ -191,7 +191,9 @@ document.querySelector('.clear-screen').addEventListener('mousedown', onClearScr
 
 document.querySelector('.theme').addEventListener('click', onChangeTheme)
 
-document.querySelector('.main-menu').addEventListener('mousedown', onMouseDown)
+document.querySelector('.main-menu').addEventListener('mousedown', onMouseDownInsideMenu)
+document.querySelector('.hide-menu').addEventListener('mousedown', onMouseDownInsideMenu)
+document.querySelector('.color-pallet').addEventListener('mousedown', onMouseDownInsideMenu)
 
 window.addEventListener('mouseup', onMouseUp)
 
@@ -220,7 +222,7 @@ function onChangeTheme(){
     UI.clearScreen();
 }
 
-function onMouseDown(){
+function onMouseDownInsideMenu(){
     UI.isInsideMenu = true
 }
 
