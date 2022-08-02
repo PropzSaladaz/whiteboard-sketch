@@ -98,6 +98,10 @@
     setLineColor(color) {
         this.line.setColor(color);
     }
+
+    setLineWidth(width) {
+        this.line.setRadius(width);
+    }
 }
 
 export { Canvas }

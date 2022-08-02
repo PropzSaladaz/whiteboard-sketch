@@ -124,6 +124,7 @@ class UserInterface {
         this.setCurrentColor(this.theme.eraserColor);
         this.usingEraser = true;
         foregroundCanvas.setLineColor(this.currentColor);
+        console.log(this.usingEraser);
     }
 
     stopUsingEraser() {
@@ -141,6 +142,12 @@ class UserInterface {
 
         document.querySelector('body').style.backgroundColor = this.theme.backgroundColor;
         document.querySelector('.color-btn').style.backgroundColor = this.theme.mainLineColor;
+        console.log(this.usingEraser);
+        if (this.usingEraser) {
+            this.stopUsingEraser();
+            this.setLineWidth(minLineRadius);
+            foregroundCanvas.setLineWidth(minLineRadius);
+        }
     }
 
     eventLineWidthChanged() {
@@ -188,9 +195,7 @@ const lineWidthChange = new Event('lineWidthChange')
 lineWidthInputSlider.addEventListener('change', onChangeLineWidth);
 
 document.querySelector('.clear-screen').addEventListener('mousedown', onClearScreen)
-
 document.querySelector('.theme').addEventListener('click', onChangeTheme)
-
 document.querySelector('.main-menu').addEventListener('mousedown', onMouseDownInsideMenu)
 document.querySelector('.hide-menu').addEventListener('mousedown', onMouseDownInsideMenu)
 document.querySelector('.color-pallet').addEventListener('mousedown', onMouseDownInsideMenu)
