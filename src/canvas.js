@@ -54,15 +54,15 @@
      * the canvas is not resized to preserve the drawing integrity
      */
     resize(){
-        if (innerWidth > this.largestXValueDrawn && 
-            innerHeight > this.largestYValueDrawn &&
-            innerWidth != this.canvas.width && 
-            innerHeight != this.canvas.height) {
+        if ((innerWidth > this.largestXValueDrawn || 
+            innerHeight > this.largestYValueDrawn) &&
+            (innerWidth != this.canvas.width ||
+            innerHeight != this.canvas.height)) {
             // copy canvas state to a temporary one
-            var tempCanvas = document.createElement('canvas')
+            let tempCanvas = document.createElement('canvas')
             tempCanvas.width = window.innerWidth
             tempCanvas.height = window.innerHeight
-            var tempCtx = tempCanvas.getContext('2d')
+            let tempCtx = tempCanvas.getContext('2d')
             tempCtx.drawImage(this.canvas, 0, 0)
 
             // copy back to the original

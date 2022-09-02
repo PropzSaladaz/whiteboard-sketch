@@ -55,6 +55,7 @@ body {
 }
 
 // BUTTONS - - - - - - - - - - - - - - - - -
+
 .btn-border {
     width: $btn-size;
     height: $btn-size;
@@ -67,9 +68,6 @@ body {
     
     &:hover {
         background-color: white;
-        border-width: 2px;
-        border-width: 8px;
-        border-radius: 50%;
     }
 }
 
@@ -92,6 +90,12 @@ body {
         background-color: $ui-main-color;
         border-width: 3px;
     }
+}
+
+.selected-color {
+    border-color: $ui-main-color;
+    border-radius: 50%;
+    border-width: 8px;
 }
 
 .color-pallet {

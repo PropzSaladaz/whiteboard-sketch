@@ -48,7 +48,7 @@ class Line {
         this.maxBezierParamValue = (0.7)*this.bezierStep;
         this.whiteboard = whiteboard
 
-        // variables
+        // letiables
         this.isPressed = false;
         this.radius = radius;
         this.currentPosition = new Point(undefined, undefined);
@@ -81,7 +81,7 @@ class Line {
     drawBezierCurve(){
         for (let i = 0 ; i <= this.maxBezierParamValue ; i++) {
 
-            var {x,y} = bezierCurve3Points(i/this.bezierStep, this.lastNPoints[0], this.lastNPoints[1], this.lastNPoints[2]);
+            let {x,y} = bezierCurve3Points(i/this.bezierStep, this.lastNPoints[0], this.lastNPoints[1], this.lastNPoints[2]);
             if (i == this.maxBezierParamValue) {
               console.log('here')
               // next time we call drawBezierCurve, the point where the bezier curve stopped will be the last point drawned

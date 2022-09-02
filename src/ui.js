@@ -31,72 +31,123 @@ const themes = {
     dark:  new Theme(darkMode , colors.white, colors.black, colors.white, colors.black )
 }
  
-const lineWidthInputSlider = document.querySelector('.line-width')
-const rangeInput           = document.querySelector('input[type="range"]')
-const colorPallet          = document.querySelector('.color-pallet')
-const collorPalletWrapper  = document.querySelector('.color-pallet-wrapper');
-const hideMenu             = document.querySelector('.hide-menu');
-const menuWrapper          = document.querySelector('.main-menu');
-const eraserButton         = document.querySelector('.eraser');
+
+// Dom elements
+const lineWidthInputSlider  = document.querySelector('.line-width')
+const rangeInput            = document.querySelector('input[type="range"]')
+const colorPalletDOM        = document.querySelector('.color-pallet')
+const collorPalletWrapper   = document.querySelector('.color-pallet-wrapper');
+const hideMenu              = document.querySelector('.hide-menu');
+const menuDOM               = document.querySelector('.main-menu');
+const eraserButton          = document.querySelector('.eraser');
+
+// event names
+const colorSelected     = new Event('color-selected');
+const onLineWidthChange   = new Event('line-width-change');
+const onReaserSelected    = new Event('eraser-selected');
+const onReset             = new Event('reset');
 
 const minLineRadius   = 1;
 const minEraserRadius = 2;
+
+class ColorPallet {
+    constructor(mainColor) {
+        this.selectedColor = undefined;
+        this.colors =  { // each of these colors is a property with DIV appended at the end
+            mainColor: mainColor ,
+            yellow:    colors.yellow ,
+            blue:      colors.blue ,
+            red:       colors.red ,
+            green:     colors.green 
+        };
+        /* 
+        this.mainColorDIV = 
+        ...
+        */
+
+        Object.keys(this.colors).forEach(color => {
+            // Add the collors to the DOM
+            let div = document.createElement('div')
+            if (color === this.colors.mainColor) styleSelected(div);
+            initializeColorDiv(div, this.colors[color]);
+            colorPalletDOM.appendChild(div)
+        
+            // add event listeners to each to change line color on click
+            div.addEventListener('click', () => {
+                foregroundCanvas.setLineColor(div.style.backgroundColor);
+                this.setSelectedColor(color);
+                //this.stopUsingEraser();
+        
+                let colors = [...colorPalletDOM.children]
+                colors.forEach( div => this.styleNotSelectedColor(div)); // reset all colors' style
+                this.styleSelectedColor(div) // put border only on the clicked one
+
+                // throw event so that UI can listen and stop using eraser
+                colorPalletDOM.dispatchEvent(colorSelected); 
+        
+            });
+
+            function initializeColorDiv(div, color) {
+                div.style.backgroundColor = color;
+                div.style.transition = "all 200ms ease-in-out";
+                div.classList.add("color-btn", "btn-border", "btn-hoverable");
+            };
+        });
+
+        const colorNames = Object.keys(this.colors);
+        const colorsDIV = document.querySelectorAll('.color-btn');
+        for (let index in colorNames ) {
+            this[`${colorNames[index]}DIV`] =  colorsDIV[index];
+            console.log(`${colorNames[index]}DIV`);
+        }
+    }
+
+    getColorDiv(color) {
+        return this[`${color}DIV`]; // color div properties are in the form "colorDIV"
+    }
+
+    styleNotSelectedColor(div) {
+        div.classList.remove('selected-color')
+    }
+
+    styleSelectedColor(div) {
+        div.classList.add('selected-color')
+    }
+
+    setMainColor(color) {
+        this.colors.mainColor = color;
+    }
+
+    getSelectedColor() {
+        return colors[this.selectedColor];
+    }
+
+    setSelectedColor(color) {
+        this.selectedColor = color;
+    }
+
+    clearSelectedColor() {
+        let colors = document.querySelectorAll(".color-btn");
+        colors.forEach(div => div.classList.remove('selected-color'));
+        this.selectedColor = undefined;
+    }
+
+
+
+}
 
 
 class UserInterface {
     constructor() {
         this.theme               = themes.light
-        this.menuWrapper         = menuWrapper;
+        this.menuWrapper         = menuDOM;
         this.collorPalletWrapper = collorPalletWrapper
         this.isVisible           = true;
         this.isInsideMenu        = false
         this.usingEraser         = false;
         this.lineWidth           = minLineRadius
         this.currentColor        = themes.light.mainLineColor
-        this.colorPallet         = {mainColor: this.theme.mainLineColor ,
-                                    yellow:    colors.yellow ,
-                                    blue:      colors.blue ,
-                                    red:       colors.red ,
-                                    green:     colors.green }
-
-        Object.entries(this.colorPallet).forEach((entryArray) => {
-            var color = entryArray[1]
-            // Add the collors to the DOM
-            var div = document.createElement('div')
-            if (color === this.theme.mainLineColor) {
-                styleSelected(div)
-            }
-            div.style.backgroundColor = color
-            div.style.transition = "all 200ms ease-in-out"
-            div.classList.add("color-btn", "btn-border", "btn-hoverable")
-            colorPallet.appendChild(div)
-        
-        
-            // add event listeners to each to change line color if needed
-            div.addEventListener('click', () => {
-                foregroundCanvas.line.setColor(div.style.backgroundColor)
-                this.setCurrentColor(div.style.backgroundColor)
-                this.stopUsingEraser();
-        
-                var colors = [...colorPallet.children]
-                colors.forEach( (color) => { // reset all colors' border
-                    color.style.borderColor =  borderColor
-                    color.style.borderRadius = "30%"
-                    color.style.borderWidth = "2px"
-                })
-                // put border only on the clicked one
-                styleSelected(div)
-        
-            })
-
-            function styleSelected(selectedDiv) {
-                selectedDiv.style.borderWidth = "8px"
-                selectedDiv.style.borderColor = "#6A78F5"
-                selectedDiv.style.borderRadius = "50%"
-            }
-        
-        })
-
+        this.colorPallet         = new ColorPallet(this.theme.mainLineColor);
         
     }
 
@@ -109,7 +160,7 @@ class UserInterface {
     }
 
     getLineColor() {
-        return this.currentColor
+        return this.colorPallet.getSelectedColor();
     }
 
     getLineWidth() {
@@ -123,30 +174,33 @@ class UserInterface {
     useEraser() {
         this.setCurrentColor(this.theme.eraserColor);
         this.usingEraser = true;
+        this.colorPallet.clearSelectedColor();
         foregroundCanvas.setLineColor(this.currentColor);
-        console.log(this.usingEraser);
     }
 
     stopUsingEraser() {
         this.usingEraser = false;
+        lineWidthInputSlider.dispatchEvent(onReset); // send reset event to lineWidthInputSLider to reset line width
     }
 
     toggleTheme(){
         const isUsingMainColor = (this.currentColor === this.theme.mainLineColor);
+        const mainColorButton = this.colorPallet.getColorDiv('mainColor') // select the color of the first button (the main color one)
         this.theme = (this.theme.name === lightMode) ? themes.dark : themes.light;
         if (isUsingMainColor) {
             this.setCurrentColor(this.theme.mainLineColor);
             foregroundCanvas.setLineColor(this.currentColor);
         }
-        colorPallet.mainColor = this.theme.mainLineColor;
+        //colorPalletDOM.mainColor = this.theme.mainLineColor;
 
         document.querySelector('body').style.backgroundColor = this.theme.backgroundColor;
-        document.querySelector('.color-btn').style.backgroundColor = this.theme.mainLineColor;
-        console.log(this.usingEraser);
+        mainColorButton.style.backgroundColor = this.theme.mainLineColor; 
+
         if (this.usingEraser) {
             this.stopUsingEraser();
             this.setLineWidth(minLineRadius);
             foregroundCanvas.setLineWidth(minLineRadius);
+            mainColorButton.dispatchEvent(new Event('click')); // simulate a click to select main color
         }
     }
 
@@ -155,7 +209,8 @@ class UserInterface {
     }
 
     clearScreen() {
-        foregroundCanvas.clearScreen()
+        this.setCurrentColor(this.colorPallet.getSelectedColor());
+        foregroundCanvas.clearScreen();
         foregroundCanvas.setLineColor(this.currentColor);
     }
 
@@ -190,9 +245,10 @@ const UI = new UserInterface()
 
 // ------------------------ Events -------------------------------- //
 
-const lineWidthChange = new Event('lineWidthChange')
+
 
 lineWidthInputSlider.addEventListener('change', onChangeLineWidth);
+lineWidthInputSlider.addEventListener('reset', onResetLineWidth);
 
 document.querySelector('.clear-screen').addEventListener('mousedown', onClearScreen)
 document.querySelector('.theme').addEventListener('click', onChangeTheme)
@@ -208,14 +264,22 @@ hideMenu.addEventListener('click', onHideMenu);
 
 eraserButton.addEventListener('click', onEraser)
 
+colorPalletDOM.addEventListener('color-selected', onColorSelected);
+
 
 
 
 // ------------------------ Event Handlers -------------------------------- //
 
+function onResetLineWidth() {
+    lineWidthInputSlider.value = (lineWidthInputSlider.max - lineWidthInputSlider.min) / 2;     // set width to half
+    foregroundCanvas.setLineWidth(minLineRadius + (lineWidthInputSlider.value/25));             // update width
+    rangeInput.dispatchEvent(new Event('input'), { target: lineWidthInputSlider });             // set the slider background to half
+}
+
 function onChangeLineWidth(){
-    if (UI.usingEraser) foregroundCanvas.line.setRadius(minEraserRadius + 5*(lineWidthInputSlider.value/25))
-    else foregroundCanvas.line.setRadius(minLineRadius + (lineWidthInputSlider.value/25))
+    if (UI.usingEraser) foregroundCanvas.setLineWidth(minEraserRadius + 5*(lineWidthInputSlider.value/25))
+    else foregroundCanvas.setLineWidth(minLineRadius + (lineWidthInputSlider.value/25))
 }
 
 function onClearScreen(){
@@ -253,6 +317,10 @@ function onHideMenu(){
 
 function onEraser(){
     UI.useEraser();
+}
+
+function onColorSelected() {
+    UI.stopUsingEraser();
 }
 
 

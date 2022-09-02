@@ -24,7 +24,7 @@ const backgroundCanvas = 0 //new Canvas(backCanvas)
  
 // --------------------Event Listeners -------------------- //
 
-var mousePressed = false;
+let mousePressed = false;
 
 const onMouseDown = function(e) {
     if (!UI.isInsideMenu) {
