@@ -54,10 +54,8 @@
      * the canvas is not resized to preserve the drawing integrity
      */
     resize(){
-        if ((innerWidth > this.largestXValueDrawn || 
-            innerHeight > this.largestYValueDrawn) &&
-            (innerWidth != this.canvas.width ||
-            innerHeight != this.canvas.height)) {
+        if ((innerWidth > this.largestXValueDrawn || innerHeight > this.largestYValueDrawn) &&
+            (innerWidth != this.canvas.width ||innerHeight != this.canvas.height)) {
             // copy canvas state to a temporary one
             let tempCanvas = document.createElement('canvas')
             tempCanvas.width = window.innerWidth
