@@ -37,7 +37,6 @@ const lineWidthInputSlider  = document.querySelector('.line-width')
 const rangeInput            = document.querySelector('input[type="range"]')
 const colorPalletDOM        = document.querySelector('.color-pallet')
 const collorPalletWrapper   = document.querySelector('.color-pallet-wrapper');
-const hideMenu              = document.querySelector('.hide-menu');
 const menuDOM               = document.querySelector('.main-menu');
 const eraserButton          = document.querySelector('.eraser');
 
@@ -215,6 +214,7 @@ class UserInterface {
     }
 
     hide() {
+        this.isInsideMenu = false;
         this.menuWrapper.style.transform = 'translateX(100px)';
         this.menuWrapper.style.opacity   = '0';
         this.collorPalletWrapper.style.transform = 'translateX(100px)';
@@ -222,6 +222,7 @@ class UserInterface {
     }
 
     show() {
+        this.isInsideMenu = true;
         this.menuWrapper.style.transform = 'translateX(0px)';
         this.menuWrapper.style.opacity   = '1';
         this.collorPalletWrapper.style.transform = 'translateX(0px)';
@@ -253,14 +254,13 @@ lineWidthInputSlider.addEventListener('reset', onResetLineWidth);
 document.querySelector('.clear-screen').addEventListener('mousedown', onClearScreen)
 document.querySelector('.theme').addEventListener('click', onChangeTheme)
 document.querySelector('.main-menu').addEventListener('mousedown', onMouseDownInsideMenu)
-document.querySelector('.hide-menu').addEventListener('mousedown', onMouseDownInsideMenu)
+document.querySelector('.ui-wrapper').addEventListener('mouseover', showUIMenu);
+document.querySelector('.ui-wrapper').addEventListener('mouseout',  hideUIMenu);
 document.querySelector('.color-pallet').addEventListener('mousedown', onMouseDownInsideMenu)
 
 window.addEventListener('mouseup', onMouseUp)
 
 rangeInput.addEventListener('input', changeInputRangeFillBackground)
-
-hideMenu.addEventListener('click', onHideMenu);
 
 eraserButton.addEventListener('click', onEraser)
 
@@ -270,6 +270,16 @@ colorPalletDOM.addEventListener('color-selected', onColorSelected);
 
 
 // ------------------------ Event Handlers -------------------------------- //
+
+function hideUIMenu() {
+    UI.hide();
+    console.log("hide");
+}
+
+function showUIMenu() {
+    UI.show();
+    console.log("show");
+}
 
 function onResetLineWidth() {
     lineWidthInputSlider.value = (lineWidthInputSlider.max - lineWidthInputSlider.min) / 2;     // set width to half

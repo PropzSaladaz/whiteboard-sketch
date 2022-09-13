@@ -24,11 +24,12 @@ $btn-margin-inline: 2px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-end;
     height: 100vh;
-    width: min-content;
+    width: 150px;
     right: 0px;
     z-index: 2;
-    transition: all 100ms ease-in-out;
+    transition: all 50ms ease-in-out;
 }
 
 .ui {
