@@ -13,4 +13,4 @@
 - [ ] Export as png
 - [ ] Insert Text
 - [ ] Insert geometric figures (squares, circles)
-- [ ] Eraser
+- [X] Eraser
