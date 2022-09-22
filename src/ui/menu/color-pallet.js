@@ -1,6 +1,6 @@
 import colors from '/src/ui/colors.js';
-
-const colorPalletDOM        = document.querySelector('.color-pallet')
+import { FOREGROUND_CANVAS_DOM, MENU_DOM, COLOR_PALLET_DOM } from '../../domElements.js';
+import { eventObj } from '../../events.js';
 
 class ColorPallet {
   constructor(mainColor) {
@@ -18,20 +18,22 @@ class ColorPallet {
           let div = document.createElement('div')
           if (color === this.colors.mainColor) styleSelected(div);
           initializeColorDiv(div, this.colors[color]);
-          colorPalletDOM.appendChild(div)
+          COLOR_PALLET_DOM.appendChild(div)
       
           // add event listeners to each to change line color on click
           div.addEventListener('click', () => {
-              foregroundCanvas.setLineColor(div.style.backgroundColor);
+            console.log(typeof eventObj.onColorSelected);
+            FOREGROUND_CANVAS_DOM.dispatchEvent(eventObj.onColorSelected);
+            // setLineColor(div.style.backgroundColor)
               this.setSelectedColor(color);
               //this.stopUsingEraser();
       
-              let colors = [...colorPalletDOM.children]
+              let colors = [...COLOR_PALLET_DOM.children]
               colors.forEach( div => this.styleNotSelectedColor(div)); // reset all colors' style
               this.styleSelectedColor(div) // put border only on the clicked one
 
               // throw event so that UI can listen and stop using eraser
-              colorPalletDOM.dispatchEvent(colorSelected); 
+              MENU_DOM.dispatchEvent(eventObj.onColorSelected); 
       
           });
 
@@ -85,7 +87,7 @@ class ColorPallet {
   }
 
   get domElement() {
-    return colorPalletDOM;
+    return COLOR_PALLET_DOM;
   }
 }
 

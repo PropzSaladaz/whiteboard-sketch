@@ -1,4 +1,4 @@
-/*
+/**
   Represent the names of all the events used by the app.
   The respective event objects will be auto-generated in
   the eventObj variable below once the event String is 
@@ -17,7 +17,7 @@ const eventString = {
 const eventObj = {}
 
 
-for (let {key, value} in Object.keys(eventString)){
+for (let [key, value] of Object.entries(eventString)){
   eventObj[key] = new Event(value);
 }
 

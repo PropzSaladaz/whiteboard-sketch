@@ -3,57 +3,6 @@ import { Line } from '/src/simple-line.js'
 import { Canvas } from '/src/canvas.js'
 
 
-// ----------------- (Fore/Back)ground Canvas ------------------ //
-
-
-const frontCanvas = document.querySelector('.foreground-canvas')
-frontCanvas.width = innerWidth
-frontCanvas.height = innerHeight
-
-const foregroundCanvas = new Canvas(
-    frontCanvas,
-    new Line(UI.lineWidth, frontCanvas.getContext('2d'))
-    ) 
-
-/* const backCanvas = document.querySelector('.background-canvas')
-backCanvas.width = innerWidth
-backCanvas.height = innerHeight*/
-
-const backgroundCanvas = 0 //new Canvas(backCanvas)
-
- 
-// --------------------Event Listeners -------------------- //
-
-let mousePressed = false;
-
-const onMouseDown = function(e) {
-    if (!UI.isInsideMenu) {
-        mousePressed = true;
-        foregroundCanvas.startNewLine();
-    }
-}
-
-const onMouseUp = function(e) {
-    mousePressed = false;
-    foregroundCanvas.endOfLine();
-}
-
-const onMouseMove = function(e) {
-    mouse.update(e.x, e.y)
-}
-
-const onResize = function(e) {
-    foregroundCanvas.resize()
-}
-
-window.addEventListener('mousedown', onMouseDown)
-
-window.addEventListener('mouseup',   onMouseUp)
-
-window.addEventListener('mousemove', onMouseMove)
-
-window.addEventListener('resize',    onResize)
-
 
 
 // ------------------ Mouse ----------------------- //
@@ -86,18 +35,87 @@ const mouse = {
     }
 }
 
+let mousePressed = false;
+
+// ----------------- (Fore/Back)ground Canvas ------------------ //
+
+
+const frontCanvas = document.querySelector('.foreground-canvas')
+frontCanvas.width = innerWidth
+frontCanvas.height = innerHeight
+
+const foregroundCanvas = new Canvas(
+    frontCanvas,
+    new Line(UI.lineWidth, frontCanvas.getContext('2d'))
+    ) 
+
+
+class DrawingApp {
+    constructor(canvas, ui, mouse){
+        this.canvas = canvas;
+        this.ui = ui;
+        this.mouse = mouse;
+    }
+
+    update() {
+        if (mousePressed) {
+            this.canvas.drawLine(mouse)
+            this.canvas.updateCanvasLimits(mouse)
+            this.canvas.resize()
+        }
+
+    }
+}
+
+const drawingApp = new DrawingApp(foregroundCanvas, UI, mouse);
+/* const backCanvas = document.querySelector('.background-canvas')
+backCanvas.width = innerWidth
+backCanvas.height = innerHeight*/
+
+const backgroundCanvas = 0 //new Canvas(backCanvas)
+
+ 
+// --------------------Event Listeners -------------------- //
+
+
+
+const onMouseDown = function(e) {
+    if (!UI.isInsideMenu) {
+        mousePressed = true;
+        foregroundCanvas.startNewLine();
+    }
+}
+
+const onMouseUp = function(e) {
+    mousePressed = false;
+    foregroundCanvas.endOfLine();
+}
+
+const onMouseMove = function(e) {
+    mouse.update(e.x, e.y)
+}
+
+const onResize = function(e) {
+    foregroundCanvas.resize()
+}
+
+window.addEventListener('mousedown', onMouseDown)
+
+window.addEventListener('mouseup',   onMouseUp)
+
+window.addEventListener('mousemove', onMouseMove)
+
+window.addEventListener('resize',    onResize)
+
+
+
+
+
 
 /* backgroundCanvas.changeBackgroundColor('rgb(200,200,200)') */
 function animate() {
     requestAnimationFrame(animate)
-    if(mousePressed) {
-        foregroundCanvas.drawLine(mouse)
-        foregroundCanvas.updateCanvasLimits(mouse)
-/*         backgroundCanvas.updateCanvasLimits(mouse) */
-        foregroundCanvas.resize()
-/*         backgroundCanvas.resize() */
-    
-    }
+    drawingApp.update()
 }
 animate()
 
