@@ -22,7 +22,6 @@ class ColorPallet {
       
           // add event listeners to each to change line color on click
           div.addEventListener('click', () => {
-            console.log(typeof eventObj.onColorSelected);
             FOREGROUND_CANVAS_DOM.dispatchEvent(eventObj.onColorSelected);
             // setLineColor(div.style.backgroundColor)
               this.setSelectedColor(color);

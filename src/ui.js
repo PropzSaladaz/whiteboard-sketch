@@ -14,7 +14,8 @@ const minLineRadius   = 1;
 const minEraserRadius = 2;
 
 class UserInterface {
-    constructor() {
+    constructor(canvas) {
+        this.canvas              = canvas
         this.theme               = themes.light
         this.menuWrapper         = MENU_DOM;
         this.collorPalletWrapper = WRAPPER_COLOR_PALLET_DOM
@@ -28,6 +29,7 @@ class UserInterface {
     }
 
     setCurrentColor(color) { 
+        console.log(color);
         this.currentColor = color
     }
 
