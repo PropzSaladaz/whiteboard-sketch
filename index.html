@@ -6,16 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>drawingApp</title>
     <link rel="stylesheet" href="./dist/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
     <div class="ui-wrapper">
         <div class="ui main-menu">
-            <button class="clear-screen toggle-menu btn-border btn-clickeable">DEL</button>
+            <button class="clear-screen toggle-menu btn-border btn-clickeable">
+                <span class="material-symbols-outlined">
+                    delete
+                </span>
+            </button>
             <div class="separator"></div>
-            <button class="btn-border btn-clickeable">SAV</button>
-            <button class="btn-border btn-clickeable">UND</button>
-            <button class="btn-border btn-clickeable theme">THE</button>
-            <button class="btn-border btn-clickeable eraser">ERA</button>
+            <button class="btn-border btn-clickeable">
+                <span class="material-symbols-outlined">
+                    photo_album
+                </span>
+            </button>
+            <button class="btn-border btn-clickeable">
+                <span class="material-symbols-outlined">
+                    undo
+                </span>
+            </button>
+            <button class="btn-border btn-clickeable theme">
+                <span class="material-symbols-outlined">
+                    dark_mode
+                </span>
+            </button>
+            <button class="btn-border btn-clickeable eraser">
+                <span class="material-symbols-outlined">
+                    auto_fix_normal
+                </span>
+            </button>
             <div class="separator"></div>
             <input class="line-width" orient="vertical" type="range" value="1" min="1" max="100">
         </div>
