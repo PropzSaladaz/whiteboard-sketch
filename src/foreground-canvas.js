@@ -1,8 +1,8 @@
 import { UI } from '/src/ui.js'
 import { Line } from '/src/simple-line.js'
 import { Canvas } from '/src/canvas.js'
-
-
+import {FOREGROUND_CANVAS_DOM} from '/src/domElements.js';
+import {eventString} from '/src/events.js';
 
 
 // ------------------ Mouse ----------------------- //
@@ -47,8 +47,13 @@ frontCanvas.height = innerHeight
 const foregroundCanvas = new Canvas(
     frontCanvas,
     new Line(UI.lineWidth, frontCanvas.getContext('2d'))
-    ) 
+); 
 
+FOREGROUND_CANVAS_DOM.addEventListener(eventString.onColorSelected, onColorSelected);
+
+function onColorSelected(e) {
+    foregroundCanvas.setLineColor(e.color);
+}
 
 class DrawingApp {
     constructor(canvas, ui, mouse){
@@ -106,8 +111,6 @@ window.addEventListener('mouseup',   onMouseUp)
 window.addEventListener('mousemove', onMouseMove)
 
 window.addEventListener('resize',    onResize)
-
-
 
 
 

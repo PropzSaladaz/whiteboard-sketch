@@ -21,5 +21,14 @@ for (let [key, value] of Object.entries(eventString)){
   eventObj[key] = new Event(value);
 }
 
+/**
+ * Add a method to create new event objets for OnColourSelected
+ * To pass the selected color
+ */
+eventObj.onColorSelected.setColor = function(color) {
+  let event = Object.create(eventObj.onColorSelected);
+  event.color = color;
+  return event;
+}
 
 export { eventString , eventObj };

@@ -1,6 +1,6 @@
 import colors from '/src/ui/colors.js';
 import { FOREGROUND_CANVAS_DOM, MENU_DOM, COLOR_PALLET_DOM } from '../../domElements.js';
-import { eventObj } from '../../events.js';
+import { eventObj, eventString } from '../../events.js';
 
 class ColorPallet {
   constructor(mainColor) {
@@ -22,7 +22,9 @@ class ColorPallet {
       
           // add event listeners to each to change line color on click
           div.addEventListener('click', () => {
-            FOREGROUND_CANVAS_DOM.dispatchEvent(eventObj.onColorSelected);
+            let clrEvent = new Event(eventString.onColorSelected);
+            clrEvent.color = div.style.backgroundColor
+            FOREGROUND_CANVAS_DOM.dispatchEvent(clrEvent);
             // setLineColor(div.style.backgroundColor)
               this.setSelectedColor(color);
               //this.stopUsingEraser();

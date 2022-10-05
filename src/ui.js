@@ -129,8 +129,6 @@ const UI = new UserInterface()
 
 // ------------------------ Events -------------------------------- //
 
-
-
 SLIDER_LINE_WIDTH_DOM.addEventListener('change', onChangeLineWidth);
 SLIDER_LINE_WIDTH_DOM.addEventListener('reset', onResetLineWidth);
 
@@ -148,8 +146,6 @@ SLIDER_LINE_WIDTH_DOM.addEventListener('input', changeInputRangeFillBackground)
 BUTTON_ERASER_DOM.addEventListener('click', onEraser)
 
 UI.getColorPalletDOM().addEventListener('color-selected', onColorSelected);
-
-
 
 
 // ------------------------ Event Handlers -------------------------------- //
