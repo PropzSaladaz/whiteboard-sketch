@@ -9,6 +9,7 @@ const eventString = {
   onLineWidthChange:   'line-width-change',
   onReaserSelected:    'eraser-selected',
   onReset:             'reset',
+  onSaveCanvasAsImg:    'save-canvas-as-img',
 }
 
 /*

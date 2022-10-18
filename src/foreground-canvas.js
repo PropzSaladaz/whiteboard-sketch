@@ -49,7 +49,9 @@ const foregroundCanvas = new Canvas(
     new Line(UI.lineWidth, frontCanvas.getContext('2d'))
 ); 
 
+
 FOREGROUND_CANVAS_DOM.addEventListener(eventString.onColorSelected, onColorSelected);
+FOREGROUND_CANVAS_DOM.addEventListener(eventString.onSaveCanvasAsImg, onSaveCanvasAsImg);
 
 function onColorSelected(e) {
     foregroundCanvas.setLineColor(e.color);
@@ -112,7 +114,14 @@ window.addEventListener('mousemove', onMouseMove)
 
 window.addEventListener('resize',    onResize)
 
-
+function onSaveCanvasAsImg() {
+    const link = document.createElement('a');
+    link.download = 'drawing.png';
+    link.href = frontCanvas.toDataURL();
+    link.click();
+    link.delete;
+    console.log("here");
+}
 
 
 /* backgroundCanvas.changeBackgroundColor('rgb(200,200,200)') */

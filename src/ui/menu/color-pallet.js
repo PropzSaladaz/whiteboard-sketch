@@ -25,6 +25,7 @@ class ColorPallet {
             let clrEvent = new Event(eventString.onColorSelected);
             clrEvent.color = div.style.backgroundColor
             FOREGROUND_CANVAS_DOM.dispatchEvent(clrEvent);
+            MENU_DOM.dispatchEvent(clrEvent);
             // setLineColor(div.style.backgroundColor)
               this.setSelectedColor(color);
               //this.stopUsingEraser();

@@ -3,10 +3,12 @@ import themes from '/src/ui/theme.js';
 import ColorPallet from './ui/menu/color-pallet.js';
 import {eventString, eventObj} from  '/src/events.js';
 import { 
+    FOREGROUND_CANVAS_DOM,
     SLIDER_LINE_WIDTH_DOM, 
     WRAPPER_COLOR_PALLET_DOM, 
     MENU_DOM, 
-    BUTTON_ERASER_DOM
+    BUTTON_ERASER_DOM,
+    BUTTON_SAVE_IMG_DOM
 } from './domElements.js';
 
 
@@ -26,6 +28,9 @@ class UserInterface {
         this.currentColor        = themes.light.mainLineColor
         this.colorPallet         = new ColorPallet(this.theme.mainLineColor);
         
+    }
+    getCanvas(){
+        return this.canvas;
     }
 
     setCurrentColor(color) { 
@@ -90,6 +95,8 @@ class UserInterface {
         //this.dom.dispatchEvent(lineWidthChange)
     }
 
+
+
     clearScreen() {
         this.setCurrentColor(this.colorPallet.getSelectedColor());
         foregroundCanvas.clearScreen();
@@ -143,12 +150,15 @@ window.addEventListener('mouseup', onMouseUp)
 
 SLIDER_LINE_WIDTH_DOM.addEventListener('input', changeInputRangeFillBackground)
 
-BUTTON_ERASER_DOM.addEventListener('click', onEraser)
+BUTTON_ERASER_DOM.addEventListener('click', onEraser);
+BUTTON_SAVE_IMG_DOM.addEventListener('click', onSaveImg);
+
+MENU_DOM.addEventListener(eventString.onColorSelected, UI.stopUsingEraser());
 
 UI.getColorPalletDOM().addEventListener('color-selected', onColorSelected);
 
 
-// ------------------------ Event Handlers -------------------------------- //
+// ------------------------ Event Handlers ----------------------- //
 
 function hideUIMenu() {
     UI.hide();
@@ -159,10 +169,11 @@ function showUIMenu() {
 }
 
 function onResetLineWidth() {
+    /*
     SLIDER_LINE_WIDTH_DOM.value = (SLIDER_LINE_WIDTH_DOM.max - SLIDER_LINE_WIDTH_DOM.min) / 2;     // set width to half
     foregroundCanvas.setLineWidth(minLineRadius + (SLIDER_LINE_WIDTH_DOM.value/25));             // update width
     SLIDER_LINE_WIDTH_DOM.dispatchEvent(new Event('input'), { target: SLIDER_LINE_WIDTH_DOM });             // set the slider background to half
-}
+*/}
 
 function onChangeLineWidth(){
     if (UI.usingEraser) foregroundCanvas.setLineWidth(minEraserRadius + 5*(SLIDER_LINE_WIDTH_DOM.value/25))
@@ -204,6 +215,10 @@ function onHideMenu(){
 
 function onEraser(){
     UI.useEraser();
+}
+
+function onSaveImg() {
+    FOREGROUND_CANVAS_DOM.dispatchEvent(eventObj.onSaveCanvasAsImg);
 }
 
 function onColorSelected() {
