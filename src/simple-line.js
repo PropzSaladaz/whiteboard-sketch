@@ -43,14 +43,16 @@ class Line {
     constructor(radius, whiteboard){
         // constants
         this.numberPointsInMemory = 2
-        this.step = 100
-        this.bezierStep = 400;
-        this.maxBezierParamValue = (0.7)*this.bezierStep;
+        this.step = 10
+        this.bezierStep = 800;
+        this.maxBezierParamValue = (0.6)*this.bezierStep;
         this.whiteboard = whiteboard
 
         // letiables
         this.isPressed = false;
-        this.radius = radius;
+        this.RADIUS = radius;
+        this.currentRadius = radius;
+        this.previousRadius = radius;
         this.currentPosition = new Point(undefined, undefined);
         this.lastNPoints = []
         this.dx = 0
@@ -62,7 +64,9 @@ class Line {
     }
 
     setRadius(radius) {
-        this.radius = radius
+        this.currentRadius = radius;
+        this.previousRadius = radius;
+        this.RADIUS = radius;
     }
 
     updateCurrentPos(x, y) {
@@ -79,25 +83,37 @@ class Line {
     }
 
     drawBezierCurve(){
+        let radiusDifference = this.currentRadius - this.previousRadius;
+        let radiusProportionalToBezierParam = (currentBezierParamVal, maxBezierParamVal) => {
+            /*
+                  X       -----------  radiusDifference
+            currentBezier ------------   maxBezier
+            */
+            return ( Math.abs(radiusDifference) * currentBezierParamVal ) / maxBezierParamVal ;
+        };
         for (let i = 0 ; i <= this.maxBezierParamValue ; i++) {
-
             let {x,y} = bezierCurve3Points(i/this.bezierStep, this.lastNPoints[0], this.lastNPoints[1], this.lastNPoints[2]);
             if (i == this.maxBezierParamValue) {
               console.log('here')
-              // next time we call drawBezierCurve, the point where the bezier curve stopped will be the last point drawned
+              // next time we call drawBezierCurve, the point where the bezier curve stopped will be the starting point
+              // for the next bezier curve
               this.lastNPoints[1].update(x,y);
              
             }
-            this.drawPoint(x, y)
+            let radius = radiusDifference < 0 ? 
+                        -radiusProportionalToBezierParam(i, this.maxBezierParamValue) 
+                        : radiusProportionalToBezierParam(i, this.maxBezierParamValue);
+
+            this.drawPoint(x, y, this.previousRadius + radius)
           }
     }
 
     /**
      * Draw a single point filled circle
      */
-    drawPoint(x, y) {
+    drawPoint(x, y, radius) {
         this.whiteboard.beginPath()
-        this.whiteboard.arc(x, y, this.radius, 0 , Math.PI*2 , false)
+        this.whiteboard.arc(x, y, radius, 0 , Math.PI*2 , false)
         this.whiteboard.fill()
 
     }
@@ -114,6 +130,14 @@ class Line {
         this.isPressed = false;
         this.lastNPoints = [];
     }
+
+    update(mouse) {
+        let standardMaxVelocity = 20;
+        this.previousRadius = this.currentRadius;
+        this.currentRadius = this.RADIUS / (1 +  mouse.getVelocity()*2) ; 
+        console.log("velocity" , mouse.getVelocity()**2 / 100);
+    }
+
 }
 
 

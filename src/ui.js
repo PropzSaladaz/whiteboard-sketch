@@ -12,7 +12,7 @@ import {
 } from './domElements.js';
 
 
-const minLineRadius   = 1;
+const minLineRadius   = 5;
 const minEraserRadius = 2;
 
 class UserInterface {

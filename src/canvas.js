@@ -22,7 +22,6 @@
      */
     drawLine(mouse) {
         this.line.updateCurrentPos(mouse.currentX, mouse.currentY)
-
         this.line.drawLine()
     }
 
@@ -99,6 +98,13 @@
 
     setLineWidth(width) {
         this.line.setRadius(width);
+    }
+
+    update(mouse) {
+        this.drawLine(mouse);
+        this.updateCanvasLimits(mouse);
+        this.resize();
+        this.line.update(mouse);
     }
 }
 

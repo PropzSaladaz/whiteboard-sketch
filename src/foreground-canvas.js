@@ -30,7 +30,7 @@ const mouse = {
         return (
             Math.sqrt((this.currentX-this.lastX)**2 + (this.currentY-this.lastY)**2)
             /
-            (this.currentTime-this.lastTime)
+            (this.currentTime-this.lastTime ? this.currentTime-this.lastTime : 1) // avoid 0 so velocity isnt infinity
             ) 
     }
 }
@@ -66,9 +66,11 @@ class DrawingApp {
 
     update() {
         if (mousePressed) {
-            this.canvas.drawLine(mouse)
-            this.canvas.updateCanvasLimits(mouse)
-            this.canvas.resize()
+/*             this.canvas.drawLine(this.mouse);
+            this.canvas.updateCanvasLimits(this.mouse);
+            this.canvas.resize(); */
+            this.canvas.update(this.mouse);
+            //this.canvas.updateVelocity(this.mouse.getVelocity());
         }
 
     }
