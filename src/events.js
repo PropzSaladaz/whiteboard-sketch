@@ -19,6 +19,8 @@ const eventObj = {}
 
 
 for (let [key, value] of Object.entries(eventString)){
+  //if (eventObj[key] == eventString.onColorSelected) 
+    //eventObj[key] = new CustomEvent(eventObj.onColorSelected, {'color': undefined})
   eventObj[key] = new Event(value);
 }
 
@@ -27,8 +29,14 @@ for (let [key, value] of Object.entries(eventString)){
  * To pass the selected color
  */
 eventObj.onColorSelected.setColor = function(color) {
-  let event = Object.create(eventObj.onColorSelected);
+  let event = new Event(eventString.onColorSelected);
   event.color = color;
+  return event;
+}
+
+eventObj.onLineWidthChange.setWidth = function(width) {
+  let event = new Event(eventString.onLineWidthChange);
+  event.width = width;
   return event;
 }
 

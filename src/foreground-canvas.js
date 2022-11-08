@@ -50,12 +50,9 @@ const foregroundCanvas = new Canvas(
 ); 
 
 
-FOREGROUND_CANVAS_DOM.addEventListener(eventString.onColorSelected, onColorSelected);
-FOREGROUND_CANVAS_DOM.addEventListener(eventString.onSaveCanvasAsImg, onSaveCanvasAsImg);
 
-function onColorSelected(e) {
-    foregroundCanvas.setLineColor(e.color);
-}
+
+
 
 class DrawingApp {
     constructor(canvas, ui, mouse){
@@ -86,35 +83,39 @@ const backgroundCanvas = 0 //new Canvas(backCanvas)
  
 // --------------------Event Listeners -------------------- //
 
+window.addEventListener('mousedown', onMouseDown)
+window.addEventListener('mouseup',   onMouseUp)
+window.addEventListener('mousemove', onMouseMove)
+window.addEventListener('resize',    onResize)
+FOREGROUND_CANVAS_DOM.addEventListener(eventString.onColorSelected, onColorSelected);
+FOREGROUND_CANVAS_DOM.addEventListener(eventString.onSaveCanvasAsImg, onSaveCanvasAsImg);
+FOREGROUND_CANVAS_DOM.addEventListener(eventString.onLineWidthChange , onLineWidthChange);
 
 
-const onMouseDown = function(e) {
+
+function onMouseDown(e) {
     if (!UI.isInsideMenu) {
         mousePressed = true;
         foregroundCanvas.startNewLine();
     }
 }
 
-const onMouseUp = function(e) {
+function onMouseUp(e) {
     mousePressed = false;
     foregroundCanvas.endOfLine();
 }
 
-const onMouseMove = function(e) {
+function onMouseMove(e) {
     mouse.update(e.x, e.y)
 }
 
-const onResize = function(e) {
+function onResize(e) {
     foregroundCanvas.resize()
 }
 
-window.addEventListener('mousedown', onMouseDown)
-
-window.addEventListener('mouseup',   onMouseUp)
-
-window.addEventListener('mousemove', onMouseMove)
-
-window.addEventListener('resize',    onResize)
+function onColorSelected(e) {
+    foregroundCanvas.setLineColor(e.color);
+}
 
 function onSaveCanvasAsImg() {
     const link = document.createElement('a');
@@ -122,7 +123,10 @@ function onSaveCanvasAsImg() {
     link.href = frontCanvas.toDataURL();
     link.click();
     link.delete;
-    console.log("here");
+}
+
+function onLineWidthChange(e) {
+    foregroundCanvas.setLineWidth(e.width);
 }
 
 

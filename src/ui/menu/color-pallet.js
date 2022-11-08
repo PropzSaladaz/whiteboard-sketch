@@ -22,10 +22,9 @@ class ColorPallet {
       
           // add event listeners to each to change line color on click
           div.addEventListener('click', () => {
-            let clrEvent = new Event(eventString.onColorSelected);
-            clrEvent.color = div.style.backgroundColor
-            FOREGROUND_CANVAS_DOM.dispatchEvent(clrEvent);
-            MENU_DOM.dispatchEvent(clrEvent);
+            let colorEvent = eventObj.onColorSelected.setColor(div.style.backgroundColor);
+            FOREGROUND_CANVAS_DOM.dispatchEvent(colorEvent);
+            MENU_DOM.dispatchEvent(colorEvent);
             // setLineColor(div.style.backgroundColor)
               this.setSelectedColor(color);
               //this.stopUsingEraser();
@@ -75,6 +74,7 @@ class ColorPallet {
   }
 
   getSelectedColor() {
+    console.log("get selected color " + colors[this.selectedColor]);
       return colors[this.selectedColor];
   }
 

@@ -48,7 +48,7 @@ class Line {
         this.maxBezierParamValue = (0.6)*this.bezierStep;
         this.whiteboard = whiteboard
 
-        // letiables
+        // variables
         this.isPressed = false;
         this.RADIUS = radius;
         this.currentRadius = radius;
@@ -60,7 +60,7 @@ class Line {
     }
 
     setColor(fillStyle) {
-        this.whiteboard.fillStyle = fillStyle
+        this.whiteboard.fillStyle = fillStyle;
     }
 
     setRadius(radius) {
@@ -94,7 +94,6 @@ class Line {
         for (let i = 0 ; i <= this.maxBezierParamValue ; i++) {
             let {x,y} = bezierCurve3Points(i/this.bezierStep, this.lastNPoints[0], this.lastNPoints[1], this.lastNPoints[2]);
             if (i == this.maxBezierParamValue) {
-              console.log('here')
               // next time we call drawBezierCurve, the point where the bezier curve stopped will be the starting point
               // for the next bezier curve
               this.lastNPoints[1].update(x,y);
@@ -115,7 +114,6 @@ class Line {
         this.whiteboard.beginPath()
         this.whiteboard.arc(x, y, radius, 0 , Math.PI*2 , false)
         this.whiteboard.fill()
-
     }
 
     pressPen(){
@@ -132,10 +130,8 @@ class Line {
     }
 
     update(mouse) {
-        let standardMaxVelocity = 20;
         this.previousRadius = this.currentRadius;
-        this.currentRadius = this.RADIUS / (1 +  mouse.getVelocity()*2) ; 
-        console.log("velocity" , mouse.getVelocity()**2 / 100);
+        this.currentRadius = this.RADIUS / (1 +  mouse.getVelocity()*2); 
     }
 
 }

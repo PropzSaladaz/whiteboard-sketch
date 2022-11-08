@@ -34,7 +34,7 @@ class UserInterface {
     }
 
     setCurrentColor(color) { 
-        console.log(color);
+        console.log("set current color UI " + color);
         this.currentColor = color
     }
 
@@ -72,13 +72,15 @@ class UserInterface {
 
     toggleTheme(){
         const isUsingMainColor = (this.currentColor === this.theme.mainLineColor);
+        console.log("toggle theme " + isUsingMainColor, this.currentColor);
         const mainColorButton = this.colorPallet.getColorDiv('mainColor') // select the color of the first button (the main color one)
         this.theme = (this.theme.name === themes.light.name) ? themes.dark : themes.light;
         if (isUsingMainColor) {
-            this.setCurrentColor(this.theme.mainLineColor);
+            //this.setCurrentColor(this.theme.mainLineColor);
+            console.log("current color set to " ,this.currentColor);
             foregroundCanvas.setLineColor(this.currentColor);
         }
-        //colorPalletDOM.mainColor = this.theme.mainLineColor;
+        //this.colorPallet.mainColor = this.theme.mainLineColor;
 
         document.querySelector('body').style.backgroundColor = this.theme.backgroundColor;
         mainColorButton.style.backgroundColor = this.theme.mainLineColor; 
@@ -98,6 +100,7 @@ class UserInterface {
 
 
     clearScreen() {
+        console.log("clear screen ", this.colorPallet.getSelectedColor());
         this.setCurrentColor(this.colorPallet.getSelectedColor());
         foregroundCanvas.clearScreen();
         foregroundCanvas.setLineColor(this.currentColor);
@@ -153,9 +156,10 @@ SLIDER_LINE_WIDTH_DOM.addEventListener('input', changeInputRangeFillBackground)
 BUTTON_ERASER_DOM.addEventListener('click', onEraser);
 BUTTON_SAVE_IMG_DOM.addEventListener('click', onSaveImg);
 
-MENU_DOM.addEventListener(eventString.onColorSelected, UI.stopUsingEraser());
+//MENU_DOM.addEventListener(eventString.onColorSelected, UI.stopUsingEraser());
+MENU_DOM.addEventListener(eventString.onColorSelected, onColorSelected);
 
-UI.getColorPalletDOM().addEventListener('color-selected', onColorSelected);
+//UI.getColorPalletDOM().addEventListener('color-selected', onColorSelected);
 
 
 // ------------------------ Event Handlers ----------------------- //
@@ -169,11 +173,10 @@ function showUIMenu() {
 }
 
 function onResetLineWidth() {
-    /*
     SLIDER_LINE_WIDTH_DOM.value = (SLIDER_LINE_WIDTH_DOM.max - SLIDER_LINE_WIDTH_DOM.min) / 2;     // set width to half
-    foregroundCanvas.setLineWidth(minLineRadius + (SLIDER_LINE_WIDTH_DOM.value/25));             // update width
+    FOREGROUND_CANVAS_DOM.dispatchEvent(eventObj.onLineWidthChange.setWidth(minLineRadius + (SLIDER_LINE_WIDTH_DOM.value/25)));
     SLIDER_LINE_WIDTH_DOM.dispatchEvent(new Event('input'), { target: SLIDER_LINE_WIDTH_DOM });             // set the slider background to half
-*/}
+}
 
 function onChangeLineWidth(){
     if (UI.usingEraser) foregroundCanvas.setLineWidth(minEraserRadius + 5*(SLIDER_LINE_WIDTH_DOM.value/25))
@@ -221,7 +224,7 @@ function onSaveImg() {
     FOREGROUND_CANVAS_DOM.dispatchEvent(eventObj.onSaveCanvasAsImg);
 }
 
-function onColorSelected() {
+function onColorSelected(e) {
     UI.stopUsingEraser();
 }
 
