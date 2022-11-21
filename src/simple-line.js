@@ -49,6 +49,7 @@ class Line {
         this.whiteboard = whiteboard
 
         // variables
+        this.color = undefined;
         this.isPressed = false;
         this.RADIUS = radius;
         this.currentRadius = radius;
@@ -60,7 +61,13 @@ class Line {
     }
 
     setColor(fillStyle) {
+        this.color = fillStyle;
         this.whiteboard.fillStyle = fillStyle;
+        console.log("color set", this.whiteboard.fillStyle);
+    }
+
+    reloadColor() {
+        this.setColor(this.color);
     }
 
     setRadius(radius) {
@@ -79,6 +86,7 @@ class Line {
      * Fills the line with circles between 3 previous points under a bezier curve path.
      */
     drawLine() {
+        console.log("using color", this.whiteboard.fillStyle);
         if (this.lastNPoints.length == 3) this.drawBezierCurve();
     }
 

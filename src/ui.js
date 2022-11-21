@@ -27,6 +27,7 @@ class UserInterface {
         this.lineWidth           = minLineRadius
         this.currentColor        = themes.light.mainLineColor
         this.colorPallet         = new ColorPallet(this.theme.mainLineColor);
+        console.log("UI constructor" + this.currentColor);
         
     }
     getCanvas(){
@@ -35,7 +36,7 @@ class UserInterface {
 
     setCurrentColor(color) { 
         console.log("set current color UI " + color);
-        this.currentColor = color
+        this.currentColor = color;
     }
 
     setLineWidth(lineWidth) {
@@ -68,29 +69,24 @@ class UserInterface {
     stopUsingEraser() {
         this.usingEraser = false;
         SLIDER_LINE_WIDTH_DOM.dispatchEvent(eventObj.onReset); // send reset event to SLIDER_LINE_WIDTH_DOM to reset line width
+        this.setLineWidth(minLineRadius);
+        foregroundCanvas.setLineWidth(minLineRadius);
     }
 
     toggleTheme(){
         const isUsingMainColor = (this.currentColor === this.theme.mainLineColor);
-        console.log("toggle theme " + isUsingMainColor, this.currentColor);
         const mainColorButton = this.colorPallet.getColorDiv('mainColor') // select the color of the first button (the main color one)
+        this.stopUsingEraser();
         this.theme = (this.theme.name === themes.light.name) ? themes.dark : themes.light;
-        if (isUsingMainColor) {
-            //this.setCurrentColor(this.theme.mainLineColor);
-            console.log("current color set to " ,this.currentColor);
-            foregroundCanvas.setLineColor(this.currentColor);
-        }
-        //this.colorPallet.mainColor = this.theme.mainLineColor;
 
         document.querySelector('body').style.backgroundColor = this.theme.backgroundColor;
         mainColorButton.style.backgroundColor = this.theme.mainLineColor; 
-
-        if (this.usingEraser) {
-            this.stopUsingEraser();
-            this.setLineWidth(minLineRadius);
-            foregroundCanvas.setLineWidth(minLineRadius);
-            mainColorButton.dispatchEvent(new Event('click')); // simulate a click to select main color
+        mainColorButton.dispatchEvent(new Event('click')); // simulate a click to select main color
+        if (isUsingMainColor) {
+            this.setCurrentColor(this.theme.mainLineColor);
+            foregroundCanvas.setLineColor(this.currentColor);
         }
+        this.colorPallet.mainColor = this.theme.mainLineColor;
     }
 
     eventLineWidthChanged() {
@@ -98,12 +94,15 @@ class UserInterface {
     }
 
 
+    setThemeColor() {
+        this.setCurrentColor(this.colorPallet.getSelectedColor());
+        foregroundCanvas.setLineColor(this.currentColor);
+    }
+
 
     clearScreen() {
-        console.log("clear screen ", this.colorPallet.getSelectedColor());
-        this.setCurrentColor(this.colorPallet.getSelectedColor());
         foregroundCanvas.clearScreen();
-        foregroundCanvas.setLineColor(this.currentColor);
+        console.log("Clear screen");
     }
 
     hide() {

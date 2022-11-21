@@ -26,7 +26,7 @@ class ColorPallet {
             FOREGROUND_CANVAS_DOM.dispatchEvent(colorEvent);
             MENU_DOM.dispatchEvent(colorEvent);
             // setLineColor(div.style.backgroundColor)
-              this.setSelectedColor(color);
+              this.setSelectedColor(div.style.backgroundColor);
               //this.stopUsingEraser();
       
               let colors = [...COLOR_PALLET_DOM.children]

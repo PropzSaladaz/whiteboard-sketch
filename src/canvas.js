@@ -40,11 +40,13 @@
         if (this.line) this.context.clearRect(0,0,window.innerWidth, window.innerHeight)
         this.largestXValueDrawn = 0;
         this.largestYValueDrawn = 0;
-        this.setCanvasWidth()
-        if (this.backgroundColor) {
-            this.context.fillStyle = this.backgroundColor
-            this.context.fillRect(0, 0, window.innerWidth, window.innerHeight)
-        }
+        this.setCanvasWidth();
+        
+        // if (this.backgroundColor) {
+        //     this.context.fillStyle = this.backgroundColor
+        //     this.context.fillRect(0, 0, window.innerWidth, window.innerHeight)
+        // }
+
     }
 
     /**
@@ -84,15 +86,20 @@
     setCanvasWidth(){
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
+        this.line.reloadColor();
     }
 
     changeBackgroundColor(color) {
+        var contextFillStyle = this.context.fillStyle;
         this.backgroundColor = color
         this.context.fillStyle = color
         this.context.fillRect(0, 0, window.innerWidth, window.innerHeight)
+        this.context.fillStyle = contextFillStyle;
+        console.log("changeBgrd", contextFillStyle);
     }
 
     setLineColor(color) {
+        console.log("set line color", color);
         this.line.setColor(color);
     }
 

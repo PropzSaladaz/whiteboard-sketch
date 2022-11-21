@@ -63,11 +63,7 @@ class DrawingApp {
 
     update() {
         if (mousePressed) {
-/*             this.canvas.drawLine(this.mouse);
-            this.canvas.updateCanvasLimits(this.mouse);
-            this.canvas.resize(); */
             this.canvas.update(this.mouse);
-            //this.canvas.updateVelocity(this.mouse.getVelocity());
         }
 
     }
@@ -130,7 +126,6 @@ function onLineWidthChange(e) {
 }
 
 
-/* backgroundCanvas.changeBackgroundColor('rgb(200,200,200)') */
 function animate() {
     requestAnimationFrame(animate)
     drawingApp.update()
