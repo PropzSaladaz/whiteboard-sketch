@@ -1,29 +1,4 @@
-class  Point{
-    constructor(x, y) {
-        this.x = x
-        this.y = y
-    }
-
-    getY() {
-        return this.y
-    }
-    getX() {
-        return this.x
-    }
-    getTimeStamp(){
-        return this.timeStamp
-    }
-    equals(x, y){
-        return (x === this.x) && (y === this.y)
-    }
-    update(x,y) {
-        this.x = x
-        this.y = y
-    }
-    copy() {
-        return new Point(this.x, this.y);
-    }
-}
+import {Point} from './point.js'
 
 /**
  * Computes the x and y coordinates of the bezier curve with 3 points given a t in [0,1]
@@ -39,7 +14,7 @@ const bezierCurve3Points = function(t, p1, p2, p3) {
     return { x, y };
 }
 
-class Line {
+class BaseLine {
     constructor(radius, whiteboard){
         // constants
         this.numberPointsInMemory = 2
@@ -63,7 +38,6 @@ class Line {
     setColor(fillStyle) {
         this.color = fillStyle;
         this.whiteboard.fillStyle = fillStyle;
-        console.log("color set", this.whiteboard.fillStyle);
     }
 
     reloadColor() {
@@ -86,19 +60,11 @@ class Line {
      * Fills the line with circles between 3 previous points under a bezier curve path.
      */
     drawLine() {
-        console.log("using color", this.whiteboard.fillStyle);
         if (this.lastNPoints.length == 3) this.drawBezierCurve();
     }
 
     drawBezierCurve(){
         let radiusDifference = this.currentRadius - this.previousRadius;
-        let radiusProportionalToBezierParam = (currentBezierParamVal, maxBezierParamVal) => {
-            /*
-                  X       -----------  radiusDifference
-            currentBezier ------------   maxBezier
-            */
-            return ( Math.abs(radiusDifference) * currentBezierParamVal ) / maxBezierParamVal ;
-        };
         for (let i = 0 ; i <= this.maxBezierParamValue ; i++) {
             let {x,y} = bezierCurve3Points(i/this.bezierStep, this.lastNPoints[0], this.lastNPoints[1], this.lastNPoints[2]);
             if (i == this.maxBezierParamValue) {
@@ -108,9 +74,9 @@ class Line {
              
             }
             let radius = radiusDifference < 0 ? 
-                        -radiusProportionalToBezierParam(i, this.maxBezierParamValue) 
-                        : radiusProportionalToBezierParam(i, this.maxBezierParamValue);
-
+                        -this.radiusProportionalToBezierParam(i, this.maxBezierParamValue, radiusDifference) 
+                        : this.radiusProportionalToBezierParam(i, this.maxBezierParamValue, radiusDifference);
+            
             this.drawPoint(x, y, this.previousRadius + radius)
           }
     }
@@ -119,9 +85,9 @@ class Line {
      * Draw a single point filled circle
      */
     drawPoint(x, y, radius) {
-        this.whiteboard.beginPath()
-        this.whiteboard.arc(x, y, radius, 0 , Math.PI*2 , false)
-        this.whiteboard.fill()
+        this.whiteboard.beginPath();
+        this.drawShape(x, y, radius);
+        this.whiteboard.fill();
     }
 
     pressPen(){
@@ -137,12 +103,21 @@ class Line {
         this.lastNPoints = [];
     }
 
+
+    // All functions below may need to be overwritten for different type of lines
     update(mouse) {
-        this.previousRadius = this.currentRadius;
-        this.currentRadius = this.RADIUS / (1 +  mouse.getVelocity()*2); 
+
     }
+
+    drawShape(x, y, radius) {
+        this.whiteboard.arc(x, y, radius, 0 , Math.PI*2 , false);
+    }
+
+    radiusProportionalToBezierParam(currentBezierParamVal, maxBezierParamVal, radiusDifference) {
+        return 0;            
+    };
 
 }
 
 
-export { Line }
+export { BaseLine }

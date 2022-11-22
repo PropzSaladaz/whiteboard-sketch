@@ -7,13 +7,13 @@
  */
  class Canvas{
     constructor(canvas,line=undefined){
-        this.canvas = canvas
-        this.context = canvas.getContext('2d')
-        this.context.imageSmoothingQuality='high'
-        this.line = line
-        this.largestXValueDrawn = 0
-        this.largestYValueDrawn = 0
-        this.backgroundColor = undefined
+        this.canvas = canvas;
+        this.context = canvas.getContext('2d');
+        this.context.imageSmoothingQuality = 'high';
+        this.line = line;
+        this.largestXValueDrawn = 0;
+        this.largestYValueDrawn = 0;
+        this.backgroundColor = undefined;
     }
     
     /**
@@ -89,17 +89,29 @@
         this.line.reloadColor();
     }
 
-    changeBackgroundColor(color) {
-        var contextFillStyle = this.context.fillStyle;
+    saveCanvasAsImg() {
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        const link = document.createElement('a');
+
+        tempCanvas.width = window.innerWidth
+        tempCanvas.height = window.innerHeight        
+        tempCtx.fillStyle = this.backgroundColor;
+        tempCtx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        tempCtx.drawImage(this.canvas, 0, 0);
+
+        link.download = 'drawing.png';
+        link.href = tempCanvas.toDataURL();
+        link.click();
+        link.delete;
+        tempCanvas.delete;
+    }
+
+    setBackgroundColor(color) {
         this.backgroundColor = color
-        this.context.fillStyle = color
-        this.context.fillRect(0, 0, window.innerWidth, window.innerHeight)
-        this.context.fillStyle = contextFillStyle;
-        console.log("changeBgrd", contextFillStyle);
     }
 
     setLineColor(color) {
-        console.log("set line color", color);
         this.line.setColor(color);
     }
 

@@ -1,5 +1,6 @@
 import { UI } from '/src/ui.js'
-import { Line } from '/src/simple-line.js'
+import { DynamicPen } from '/src/lines/dynamic-pen.js'
+import { StaticPen } from '/src/lines/static-pen.js'
 import { Canvas } from '/src/canvas.js'
 import {FOREGROUND_CANVAS_DOM} from '/src/domElements.js';
 import {eventString} from '/src/events.js';
@@ -46,7 +47,7 @@ frontCanvas.height = innerHeight
 
 const foregroundCanvas = new Canvas(
     frontCanvas,
-    new Line(UI.lineWidth, frontCanvas.getContext('2d'))
+    new DynamicPen(UI.lineWidth, frontCanvas.getContext('2d'))
 ); 
 
 
@@ -86,6 +87,7 @@ window.addEventListener('resize',    onResize)
 FOREGROUND_CANVAS_DOM.addEventListener(eventString.onColorSelected, onColorSelected);
 FOREGROUND_CANVAS_DOM.addEventListener(eventString.onSaveCanvasAsImg, onSaveCanvasAsImg);
 FOREGROUND_CANVAS_DOM.addEventListener(eventString.onLineWidthChange , onLineWidthChange);
+FOREGROUND_CANVAS_DOM.addEventListener(eventString.onToggleTheme , onToggleTheme);
 
 
 
@@ -114,15 +116,15 @@ function onColorSelected(e) {
 }
 
 function onSaveCanvasAsImg() {
-    const link = document.createElement('a');
-    link.download = 'drawing.png';
-    link.href = frontCanvas.toDataURL();
-    link.click();
-    link.delete;
+    foregroundCanvas.saveCanvasAsImg();
 }
 
 function onLineWidthChange(e) {
     foregroundCanvas.setLineWidth(e.width);
+}
+
+function onToggleTheme(e) {
+    foregroundCanvas.setBackgroundColor(e.color);
 }
 
 

@@ -27,15 +27,17 @@ class UserInterface {
         this.lineWidth           = minLineRadius
         this.currentColor        = themes.light.mainLineColor
         this.colorPallet         = new ColorPallet(this.theme.mainLineColor);
-        console.log("UI constructor" + this.currentColor);
         
     }
+    getThemeBackgroundColor() {
+        return this.theme.backgroundColor;
+    }
+
     getCanvas(){
         return this.canvas;
     }
 
     setCurrentColor(color) { 
-        console.log("set current color UI " + color);
         this.currentColor = color;
     }
 
@@ -102,7 +104,6 @@ class UserInterface {
 
     clearScreen() {
         foregroundCanvas.clearScreen();
-        console.log("Clear screen");
     }
 
     hide() {
@@ -142,7 +143,7 @@ SLIDER_LINE_WIDTH_DOM.addEventListener('change', onChangeLineWidth);
 SLIDER_LINE_WIDTH_DOM.addEventListener('reset', onResetLineWidth);
 
 document.querySelector('.clear-screen').addEventListener('mousedown', onClearScreen)
-document.querySelector('.theme').addEventListener('click', onChangeTheme)
+document.querySelector('.theme').addEventListener('click', onChangeTheme);
 document.querySelector('.main-menu').addEventListener('mousedown', onMouseDownInsideMenu)
 document.querySelector('.ui-wrapper').addEventListener('mouseover', showUIMenu);
 document.querySelector('.ui-wrapper').addEventListener('mouseout',  hideUIMenu);
@@ -155,11 +156,7 @@ SLIDER_LINE_WIDTH_DOM.addEventListener('input', changeInputRangeFillBackground)
 BUTTON_ERASER_DOM.addEventListener('click', onEraser);
 BUTTON_SAVE_IMG_DOM.addEventListener('click', onSaveImg);
 
-//MENU_DOM.addEventListener(eventString.onColorSelected, UI.stopUsingEraser());
 MENU_DOM.addEventListener(eventString.onColorSelected, onColorSelected);
-
-//UI.getColorPalletDOM().addEventListener('color-selected', onColorSelected);
-
 
 // ------------------------ Event Handlers ----------------------- //
 
@@ -189,6 +186,7 @@ function onClearScreen(){
 function onChangeTheme(){
     UI.toggleTheme();
     UI.clearScreen();
+    FOREGROUND_CANVAS_DOM.dispatchEvent(eventObj.onToggleTheme.setColor(UI.getThemeBackgroundColor()));
 }
 
 function onMouseDownInsideMenu(){
@@ -226,6 +224,5 @@ function onSaveImg() {
 function onColorSelected(e) {
     UI.stopUsingEraser();
 }
-
 
 export { UI }

@@ -10,6 +10,7 @@ const eventString = {
   onReaserSelected:    'eraser-selected',
   onReset:             'reset',
   onSaveCanvasAsImg:    'save-canvas-as-img',
+  onToggleTheme:        'toggle-theme',
 }
 
 /*
@@ -19,25 +20,20 @@ const eventObj = {}
 
 
 for (let [key, value] of Object.entries(eventString)){
-  //if (eventObj[key] == eventString.onColorSelected) 
-    //eventObj[key] = new CustomEvent(eventObj.onColorSelected, {'color': undefined})
   eventObj[key] = new Event(value);
-}
 
-/**
- * Add a method to create new event objets for OnColourSelected
- * To pass the selected color
- */
-eventObj.onColorSelected.setColor = function(color) {
-  let event = new Event(eventString.onColorSelected);
-  event.color = color;
-  return event;
-}
+  eventObj[key].setColor = function(color) {
+    let event = new Event(value);
+    event.color = color;
+    return event;
+  }
 
-eventObj.onLineWidthChange.setWidth = function(width) {
-  let event = new Event(eventString.onLineWidthChange);
+  eventObj[key].setWidth = function(width) {
+  let event = new Event(value);
   event.width = width;
   return event;
 }
+}
+
 
 export { eventString , eventObj };
