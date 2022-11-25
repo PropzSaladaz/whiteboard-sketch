@@ -1,9 +1,10 @@
-import { UI } from '/src/ui.js'
+import { UI } from '/src/ui/ui.js'
 import { DynamicPen } from '/src/lines/dynamic-pen.js'
+import { DynamicRectanglePen } from '/src/lines/dynamic-rectangle-pen.js'
 import { StaticPen } from '/src/lines/static-pen.js'
-import { Canvas } from '/src/canvas.js'
-import {FOREGROUND_CANVAS_DOM} from '/src/domElements.js';
-import {eventString} from '/src/events.js';
+import { Canvas } from '/src/dom/canvas.js'
+import {FOREGROUND_CANVAS_DOM} from '/src/dom/domElements.js';
+import {eventString} from '/src/dom/events.js';
 
 
 // ------------------ Mouse ----------------------- //
@@ -71,9 +72,6 @@ class DrawingApp {
 }
 
 const drawingApp = new DrawingApp(foregroundCanvas, UI, mouse);
-/* const backCanvas = document.querySelector('.background-canvas')
-backCanvas.width = innerWidth
-backCanvas.height = innerHeight*/
 
 const backgroundCanvas = 0 //new Canvas(backCanvas)
 
@@ -84,6 +82,7 @@ window.addEventListener('mousedown', onMouseDown)
 window.addEventListener('mouseup',   onMouseUp)
 window.addEventListener('mousemove', onMouseMove)
 window.addEventListener('resize',    onResize)
+window.addEventListener('keydown', onKeyDown);
 FOREGROUND_CANVAS_DOM.addEventListener(eventString.onColorSelected, onColorSelected);
 FOREGROUND_CANVAS_DOM.addEventListener(eventString.onSaveCanvasAsImg, onSaveCanvasAsImg);
 FOREGROUND_CANVAS_DOM.addEventListener(eventString.onLineWidthChange , onLineWidthChange);
@@ -99,8 +98,10 @@ function onMouseDown(e) {
 }
 
 function onMouseUp(e) {
-    mousePressed = false;
-    foregroundCanvas.endOfLine();
+    if(!UI.isInsideMenu){
+        mousePressed = false;
+        foregroundCanvas.endOfLine();
+    }
 }
 
 function onMouseMove(e) {
@@ -109,6 +110,12 @@ function onMouseMove(e) {
 
 function onResize(e) {
     foregroundCanvas.resize()
+}
+
+function onKeyDown(e) {
+    if (e.ctrlKey && e.key === 'z') {
+        foregroundCanvas.undo();
+    }
 }
 
 function onColorSelected(e) {

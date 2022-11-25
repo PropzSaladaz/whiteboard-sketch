@@ -1,6 +1,6 @@
 import colors from '/src/ui/colors.js';
-import { FOREGROUND_CANVAS_DOM, MENU_DOM, COLOR_PALLET_DOM } from '../../domElements.js';
-import { eventObj, eventString } from '../../events.js';
+import { FOREGROUND_CANVAS_DOM, MENU_DOM, COLOR_PALLET_DOM } from '/src/dom/domElements.js';
+import { eventObj, eventString } from '/src/dom/events.js';
 
 class ColorPallet {
   constructor(mainColor) {

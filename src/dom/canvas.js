@@ -1,3 +1,63 @@
+class UndoHistory{
+    constructor(size, initialObj){
+        this.size = size;
+        this.history = [];
+        this.currentPos = 0;
+        this.history.push(initialObj);
+    }
+
+    add(obj) {
+        if (!this.isMostRecentChange()) {
+            this.deleteAllChangesAfterCurrent();
+        }
+        if (this.currentPos < this.size) this.currentPos++;
+
+        this.history.push(obj);
+        if (this.history.length > this.size) {
+            this.history.shift();
+        }
+        console.log(this.currentPos);
+        console.log(this.history);
+    }
+
+    undo() {
+        if (this.currentPos > 0){
+            this.currentPos--;
+        }
+        console.log(this.currentPos);
+        return this.history[this.currentPos];
+    }
+
+    redo() {
+        if (this.currentPos < this.history.length-1){
+            this.currentPos++;
+        }
+        return this.history[this.currentPos];
+        
+    }
+
+    clear(initialObj) {
+        this.history = [];
+        this.currentPos = 0;
+        this.history.push(initialObj);
+    }
+
+    isMostRecentChange() {
+        return this.currentPos === this.history.length-1;
+    }
+
+    deleteAllChangesAfterCurrent() {
+        let size = this.history.length-1;
+        while (size > this.currentPos) {
+            this.history.pop();
+            size--;
+        }
+    }
+
+    
+}
+const MAX_UNDO_SIZE = 5;
+
 /**
  * Represents the canvas with all drawings
  * @attribute canvas - The canvas object itself
@@ -14,6 +74,7 @@
         this.largestXValueDrawn = 0;
         this.largestYValueDrawn = 0;
         this.backgroundColor = undefined;
+        this.undoHistory = new UndoHistory(MAX_UNDO_SIZE, this.canvas);
     }
     
     /**
@@ -25,8 +86,32 @@
         this.line.drawLine()
     }
 
+    getCanvasCopy(backgroundColor = undefined){
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+
+        tempCanvas.width = window.innerWidth;
+        tempCanvas.height = window.innerHeight;
+        if(backgroundColor) {
+            tempCtx.fillStyle = this.backgroundColor;
+            tempCtx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        }
+        tempCtx.drawImage(this.canvas, 0, 0);
+        return tempCanvas;
+    }
+
     endOfLine() {
         this.line.releasePen();
+        this.undoHistory.add(this.getCanvasCopy());
+        console.log(this.undoHistory);
+    }
+
+    undo(){
+        this.clearScreen();
+        let historyCanvas = this.undoHistory.undo();
+        console.log(historyCanvas);
+        console.log(this.canvas);
+        this.context.drawImage(historyCanvas, 0, 0);
     }
 
     startNewLine() {
@@ -41,12 +126,10 @@
         this.largestXValueDrawn = 0;
         this.largestYValueDrawn = 0;
         this.setCanvasWidth();
-        
-        // if (this.backgroundColor) {
-        //     this.context.fillStyle = this.backgroundColor
-        //     this.context.fillRect(0, 0, window.innerWidth, window.innerHeight)
-        // }
+    }
 
+    resetCanvasUndoHistory() {
+        this.undoHistory.clear(this.canvas);
     }
 
     /**

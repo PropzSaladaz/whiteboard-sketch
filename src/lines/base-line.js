@@ -22,6 +22,8 @@ class BaseLine {
         this.bezierStep = 800;
         this.maxBezierParamValue = (0.6)*this.bezierStep;
         this.whiteboard = whiteboard
+        this.MIN_RADIUS = 2;
+        this.MAX_RADIUS = 8;
 
         // variables
         this.color = undefined;
@@ -44,10 +46,22 @@ class BaseLine {
         this.setColor(this.color);
     }
 
+    /**
+        @param {radius} radius - Radius as a percentage [0-100]
+    */
     setRadius(radius) {
-        this.currentRadius = radius;
-        this.previousRadius = radius;
-        this.RADIUS = radius;
+        let newRadius = this.getRadiusOfPercentage(radius);
+        this.currentRadius = newRadius;
+        this.previousRadius = newRadius;
+        this.RADIUS = newRadius;
+    }
+
+    /**
+        @param {radius} radius - Radius as a percentage [0-100]
+    */
+    getRadiusOfPercentage(radius){
+        if (radius > 100 || radius < 0) throw new RadiusUnitsException();
+        return this.MIN_RADIUS + (radius/100)*(this.MAX_RADIUS-this.MIN_RADIUS);
     }
 
     updateCurrentPos(x, y) {
@@ -119,5 +133,10 @@ class BaseLine {
 
 }
 
+
+function RadiusUnitsException() {
+    this.message = "Radius must be in percentage format [0-100]";
+    this.name = 'RadiusUnitsException';
+  }
 
 export { BaseLine }

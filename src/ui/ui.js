@@ -1,7 +1,7 @@
 import { foregroundCanvas , backgroundCanvas } from '/src/foreground-canvas.js';
 import themes from '/src/ui/theme.js';
-import ColorPallet from './ui/menu/color-pallet.js';
-import {eventString, eventObj} from  '/src/events.js';
+import ColorPallet from './menu/color-pallet.js';
+import {eventString, eventObj} from  '/src/dom/events.js';
 import { 
     FOREGROUND_CANVAS_DOM,
     SLIDER_LINE_WIDTH_DOM, 
@@ -9,7 +9,7 @@ import {
     MENU_DOM, 
     BUTTON_ERASER_DOM,
     BUTTON_SAVE_IMG_DOM
-} from './domElements.js';
+} from '../dom/domElements.js';
 
 
 const minLineRadius   = 5;
@@ -55,10 +55,6 @@ class UserInterface {
 
     getColorPalletDOM() {
         return this.colorPallet.getDomElement();
-    }
-
-    toggleInsideMenu() {
-        this.isInsideMenu = !this.isInsideMenu
     }
 
     useEraser() {
@@ -107,7 +103,7 @@ class UserInterface {
     }
 
     hide() {
-        this.isInsideMenu = false;
+        //this.isInsideMenu = false;
         this.menuWrapper.style.transform = 'translateX(100px)';
         this.menuWrapper.style.opacity   = '0';
         this.collorPalletWrapper.style.transform = 'translateX(100px)';
@@ -115,7 +111,7 @@ class UserInterface {
     }
 
     show() {
-        this.isInsideMenu = true;
+        //this.isInsideMenu = true;
         this.menuWrapper.style.transform = 'translateX(0px)';
         this.menuWrapper.style.opacity   = '1';
         this.collorPalletWrapper.style.transform = 'translateX(0px)';
@@ -145,6 +141,8 @@ SLIDER_LINE_WIDTH_DOM.addEventListener('reset', onResetLineWidth);
 document.querySelector('.clear-screen').addEventListener('mousedown', onClearScreen)
 document.querySelector('.theme').addEventListener('click', onChangeTheme);
 document.querySelector('.main-menu').addEventListener('mousedown', onMouseDownInsideMenu)
+document.querySelector('.main-menu').addEventListener('mouseover', onMouseOverMenu)
+document.querySelector('.main-menu').addEventListener('mouseleave', onMouseLeaveMenu)
 document.querySelector('.ui-wrapper').addEventListener('mouseover', showUIMenu);
 document.querySelector('.ui-wrapper').addEventListener('mouseout',  hideUIMenu);
 document.querySelector('.color-pallet').addEventListener('mousedown', onMouseDownInsideMenu)
@@ -175,8 +173,8 @@ function onResetLineWidth() {
 }
 
 function onChangeLineWidth(){
-    if (UI.usingEraser) foregroundCanvas.setLineWidth(minEraserRadius + 5*(SLIDER_LINE_WIDTH_DOM.value/25))
-    else foregroundCanvas.setLineWidth(minLineRadius + (SLIDER_LINE_WIDTH_DOM.value/25))
+    if (UI.usingEraser) foregroundCanvas.setLineWidth(SLIDER_LINE_WIDTH_DOM.value);
+    else foregroundCanvas.setLineWidth(SLIDER_LINE_WIDTH_DOM.value)
 }
 
 function onClearScreen(){
@@ -190,11 +188,11 @@ function onChangeTheme(){
 }
 
 function onMouseDownInsideMenu(){
-    UI.isInsideMenu = true
+    //UI.isInsideMenu = true
 }
 
 function onMouseUp(){
-    UI.isInsideMenu = false
+    //UI.isInsideMenu = false
 }
 
 function changeInputRangeFillBackground(e) {
@@ -223,6 +221,16 @@ function onSaveImg() {
 
 function onColorSelected(e) {
     UI.stopUsingEraser();
+}
+
+function onMouseOverMenu(e) {
+    UI.isInsideMenu = true;
+    console.log(UI.isInsideMenu);
+}
+
+function onMouseLeaveMenu(e) {
+    UI.isInsideMenu = false;
+    console.log(UI.isInsideMenu);
 }
 
 export { UI }
