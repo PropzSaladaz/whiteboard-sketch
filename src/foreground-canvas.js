@@ -116,6 +116,9 @@ function onKeyDown(e) {
     if (e.ctrlKey && e.key === 'z') {
         foregroundCanvas.undo();
     }
+    else if (e.ctrlKey && e.key === 'y' ){
+        foregroundCanvas.redo();
+    }
 }
 
 function onColorSelected(e) {
