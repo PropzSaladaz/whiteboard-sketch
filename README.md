@@ -16,3 +16,4 @@
 - [ ] Insert Text
 - [ ] Insert geometric figures (squares, circles)
 - [x] Eraser
+- [x] Undo/Redo
