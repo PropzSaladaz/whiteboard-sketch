@@ -1,3 +1,5 @@
+const MAX_UNDO_SIZE = 60;
+
 class UndoHistory{
     constructor(size, initialObj){
         this.size = size+1;
@@ -57,7 +59,6 @@ class UndoHistory{
 
     
 }
-const MAX_UNDO_SIZE = 2;
 
 /**
  * Represents the canvas with all drawings

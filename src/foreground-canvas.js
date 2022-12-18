@@ -48,7 +48,7 @@ frontCanvas.height = innerHeight
 
 const foregroundCanvas = new Canvas(
     frontCanvas,
-    new DynamicPen(UI.lineWidth, frontCanvas.getContext('2d'))
+    new DynamicRectanglePen(UI.lineWidth, frontCanvas.getContext('2d'))
 ); 
 
 

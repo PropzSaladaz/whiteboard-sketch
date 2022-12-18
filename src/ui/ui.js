@@ -188,11 +188,11 @@ function onChangeTheme(){
 }
 
 function onMouseDownInsideMenu(){
-    //UI.isInsideMenu = true
+    UI.isInsideMenu = true
 }
 
 function onMouseUp(){
-    //UI.isInsideMenu = false
+    UI.isInsideMenu = false
 }
 
 function changeInputRangeFillBackground(e) {
