@@ -225,12 +225,10 @@ function onColorSelected(e) {
 
 function onMouseOverMenu(e) {
     UI.isInsideMenu = true;
-    console.log(UI.isInsideMenu);
 }
 
 function onMouseLeaveMenu(e) {
     UI.isInsideMenu = false;
-    console.log(UI.isInsideMenu);
 }
 
 export { UI }
