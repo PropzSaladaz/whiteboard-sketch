@@ -1,6 +1,8 @@
+const MAX_UNDO_SIZE = 60;
+
 class UndoHistory{
     constructor(size, initialObj){
-        this.size = size;
+        this.size = size+1;
         this.history = [];
         this.currentPos = 0;
         this.history.push(initialObj);
@@ -16,15 +18,12 @@ class UndoHistory{
         if (this.history.length > this.size) {
             this.history.shift();
         }
-        console.log(this.currentPos);
-        console.log(this.history);
     }
 
     undo() {
         if (this.currentPos > 0){
             this.currentPos--;
         }
-        console.log(this.currentPos);
         return this.history[this.currentPos];
     }
 
@@ -56,7 +55,6 @@ class UndoHistory{
 
     
 }
-const MAX_UNDO_SIZE = 5;
 
 /**
  * Represents the canvas with all drawings
@@ -103,15 +101,19 @@ const MAX_UNDO_SIZE = 5;
     endOfLine() {
         this.line.releasePen();
         this.undoHistory.add(this.getCanvasCopy());
-        console.log(this.undoHistory);
     }
 
     undo(){
+        this.replaceImageWith(this.undoHistory.undo());
+    }
+
+    redo(){
+        this.replaceImageWith(this.undoHistory.redo());
+    }
+
+    replaceImageWith(newCanvas){
         this.clearScreen();
-        let historyCanvas = this.undoHistory.undo();
-        console.log(historyCanvas);
-        console.log(this.canvas);
-        this.context.drawImage(historyCanvas, 0, 0);
+        this.context.drawImage(newCanvas, 0, 0);
     }
 
     startNewLine() {

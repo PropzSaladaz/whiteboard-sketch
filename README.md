@@ -1,5 +1,5 @@
 # Whiteboard Sketch App
-
+[Demo](https://beautysketch.onrender.com)
 ---
 
 ### Simple Whiteboard with a pretty menu for simple annotations / drawings
@@ -16,3 +16,4 @@
 - [ ] Insert Text
 - [ ] Insert geometric figures (squares, circles)
 - [x] Eraser
+- [x] Undo/Redo

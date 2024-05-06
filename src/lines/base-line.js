@@ -80,18 +80,23 @@ class BaseLine {
     drawBezierCurve(){
         let radiusDifference = this.currentRadius - this.previousRadius;
         for (let i = 0 ; i <= this.maxBezierParamValue ; i++) {
+            let radiusDiferential;
             let {x,y} = bezierCurve3Points(i/this.bezierStep, this.lastNPoints[0], this.lastNPoints[1], this.lastNPoints[2]);
             if (i == this.maxBezierParamValue) {
-              // next time we call drawBezierCurve, the point where the bezier curve stopped will be the starting point
-              // for the next bezier curve
+              // next time we call drawBezierCurve, the point where the bezier curve stopped will be the starting point for the next bezier curve
               this.lastNPoints[1].update(x,y);
-             
             }
-            let radius = radiusDifference < 0 ? 
-                        -this.radiusProportionalToBezierParam(i, this.maxBezierParamValue, radiusDifference) 
-                        : this.radiusProportionalToBezierParam(i, this.maxBezierParamValue, radiusDifference);
             
-            this.drawPoint(x, y, this.previousRadius + radius)
+            // Since radius can differ between 2 points, we need to
+            // smooth the radius change throughout the bezier path
+            if (radiusDifference < 0) {
+                radiusDiferential = -this.radiusProportionalToBezierParam(i, this.maxBezierParamValue, radiusDifference);
+            } 
+            else {
+                radiusDiferential = this.radiusProportionalToBezierParam(i, this.maxBezierParamValue, radiusDifference);
+            }
+                        
+             this.drawPoint(x, y, this.previousRadius + radiusDiferential)
           }
     }
 
@@ -119,16 +124,16 @@ class BaseLine {
 
 
     // All functions below may need to be overwritten for different type of lines
-    update(mouse) {
-
-    }
-
     drawShape(x, y, radius) {
         this.whiteboard.arc(x, y, radius, 0 , Math.PI*2 , false);
     }
+    
+    update(mouse) {
+        throw Error("Abstract - Not implemented");
+    }
 
     radiusProportionalToBezierParam(currentBezierParamVal, maxBezierParamVal, radiusDifference) {
-        return 0;            
+        throw Error("Abstract - Not implemented");           
     };
 
 }

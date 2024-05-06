@@ -188,11 +188,11 @@ function onChangeTheme(){
 }
 
 function onMouseDownInsideMenu(){
-    //UI.isInsideMenu = true
+    UI.isInsideMenu = true
 }
 
 function onMouseUp(){
-    //UI.isInsideMenu = false
+    UI.isInsideMenu = false
 }
 
 function changeInputRangeFillBackground(e) {
@@ -225,12 +225,10 @@ function onColorSelected(e) {
 
 function onMouseOverMenu(e) {
     UI.isInsideMenu = true;
-    console.log(UI.isInsideMenu);
 }
 
 function onMouseLeaveMenu(e) {
     UI.isInsideMenu = false;
-    console.log(UI.isInsideMenu);
 }
 
 export { UI }
