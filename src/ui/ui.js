@@ -8,7 +8,8 @@ import {
     WRAPPER_COLOR_PALLET_DOM, 
     MENU_DOM, 
     BUTTON_ERASER_DOM,
-    BUTTON_SAVE_IMG_DOM
+    BUTTON_SAVE_IMG_DOM,
+    BUTTON_UNDO_DOM
 } from '../dom/domElements.js';
 
 
@@ -102,6 +103,10 @@ class UserInterface {
         foregroundCanvas.clearScreen();
     }
 
+    undo() {
+        foregroundCanvas.undo();
+    }
+
     hide() {
         //this.isInsideMenu = false;
         this.menuWrapper.style.transform = 'translateX(100px)';
@@ -153,6 +158,7 @@ SLIDER_LINE_WIDTH_DOM.addEventListener('input', changeInputRangeFillBackground)
 
 BUTTON_ERASER_DOM.addEventListener('click', onEraser);
 BUTTON_SAVE_IMG_DOM.addEventListener('click', onSaveImg);
+BUTTON_UNDO_DOM.addEventListener('click', onUndo);
 
 MENU_DOM.addEventListener(eventString.onColorSelected, onColorSelected);
 
@@ -209,6 +215,10 @@ function changeInputRangeFillBackground(e) {
 
 function onHideMenu(){
     UI.toggleVisibility();
+}
+
+function onUndo() {
+    UI.undo();
 }
 
 function onEraser(){
